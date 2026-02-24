@@ -10,7 +10,7 @@
     :root {
       --bg-dark: #0a0f18;
       --bg-card: #111827;
-      --primary: #10b981; /* Твердый зеленый вместо неонового */
+      --primary: #10b981;
       --primary-hover: #059669;
       --text-main: #f3f4f6;
       --text-muted: #9ca3af;
@@ -39,8 +39,20 @@
       padding: 16px 0;
     }
     .header-inner { display: flex; justify-content: space-between; align-items: center; }
-    .brand { font-size: 1.2rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; }
+    
+    /* Новая минималистичная структура бренда с SVG логотипом */
+    .brand { 
+      display: flex; 
+      align-items: center; 
+      gap: 12px; 
+      font-size: 1.2rem; 
+      font-weight: 800; 
+      color: var(--text-main); 
+      text-transform: uppercase; 
+      letter-spacing: 1px; 
+    }
     .brand span { color: var(--primary); }
+    
     .nav { display: flex; gap: 24px; }
     .nav a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
     .nav a:hover { color: var(--primary); }
@@ -94,7 +106,7 @@
 
     @media (max-width: 768px) {
       .hero h1 { font-size: 2.5rem; }
-      .nav { display: none; /* Simplification for mobile */ }
+      .nav { display: none; }
     }
   </style>
 </head>
@@ -102,11 +114,19 @@
 
   <header class="site-header">
     <div class="container header-inner">
-      <div class="brand">Mirror <span>Networks</span></div>
+      <div class="brand">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7L2 17L12 22L22 17L22 7L12 2Z" stroke="var(--primary)" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M12 22V12" stroke="var(--primary)" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M2 7L12 12L22 7" stroke="var(--primary)" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="12" cy="12" r="2" fill="var(--primary)"/>
+        </svg>
+        Mirror <span>Networks</span>
+      </div>
       <nav class="nav">
         <a href="#services">Services</a>
-        <a href="#process">Process</a>
         <a href="#" onclick="document.getElementById('termsModal').style.display='block'; return false;">Terms</a>
+        <a href="#" onclick="document.getElementById('privacyModal').style.display='block'; return false;">Privacy</a>
       </nav>
     </div>
   </header>
@@ -135,7 +155,7 @@
             <li>Information security risk assessment</li>
             <li>Final PDF Delivery: Threat Analysis Report</li>
           </ul>
-          <a href="ТВОЯ_ССЫЛКА_PAYPAL_230" class="btn btn-primary full-width" target="_blank">Order Basic Audit</a>
+          <a href="ВСТАВЬ_СЮДА_ССЫЛКУ_ИЗ_PAYPAL_НА_230" class="btn btn-primary full-width" target="_blank">Order Basic Audit</a>
         </div>
 
         <div class="card popular">
@@ -149,7 +169,7 @@
             <li>Wireless network security evaluation</li>
             <li>Final PDF Delivery: Actionable Hardening Plan</li>
           </ul>
-          <a href="ТВОЯ_ССЫЛКА_PAYPAL_250" class="btn btn-primary full-width" target="_blank">Order Express Audit</a>
+          <a href="ВСТАВЬ_СЮДА_ССЫЛКУ_ИЗ_PAYPAL_НА_250" class="btn btn-primary full-width" target="_blank">Order Express Audit</a>
         </div>
 
         <div class="card">
@@ -162,7 +182,7 @@
             <li>Custom security policy development</li>
             <li>Final PDF Delivery: Complete Architecture Docs</li>
           </ul>
-          <a href="ТВОЯ_ССЫЛКА_PAYPAL_300" class="btn btn-primary full-width" target="_blank">Order Advanced Setup</a>
+          <a href="ВСТАВЬ_СЮДА_ССЫЛКУ_ИЗ_PAYPAL_НА_300" class="btn btn-primary full-width" target="_blank">Order Advanced Setup</a>
         </div>
 
       </div>
@@ -214,7 +234,6 @@
   </footer>
 
   <script>
-    // Close modals when clicking outside of the content box
     window.onclick = function(event) {
       if (event.target.classList.contains('modal')) {
         event.target.style.display = "none";
