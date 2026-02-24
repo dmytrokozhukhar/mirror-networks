@@ -16,7 +16,6 @@
       --text-muted: #9ca3af;
       --border: rgba(16, 185, 129, 0.2);
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -26,11 +25,8 @@
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
-
     .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
     .section { padding: 80px 0; }
-
-    /* Header */
     .site-header {
       position: sticky; top: 0; z-index: 100;
       background: rgba(10, 15, 24, 0.95);
@@ -39,8 +35,6 @@
       padding: 16px 0;
     }
     .header-inner { display: flex; justify-content: space-between; align-items: center; }
-    
-    /* Новая минималистичная структура бренда с SVG логотипом */
     .brand { 
       display: flex; 
       align-items: center; 
@@ -52,12 +46,9 @@
       letter-spacing: 1px; 
     }
     .brand span { color: var(--primary); }
-    
     .nav { display: flex; gap: 24px; }
     .nav a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
     .nav a:hover { color: var(--primary); }
-
-    /* Hero */
     .hero { text-align: center; padding: 100px 0 60px; }
     .hero-badge {
       display: inline-block; background: rgba(16, 185, 129, 0.1); color: var(--primary);
@@ -65,16 +56,12 @@
     }
     .hero h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 20px; font-weight: 800; }
     .hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 40px; }
-
-    /* Buttons */
     .btn {
       display: inline-block; padding: 14px 28px; border-radius: 8px; font-weight: 600; text-align: center; text-decoration: none; cursor: pointer; transition: 0.3s; border: none; font-size: 1rem;
     }
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
     .full-width { width: 100%; }
-
-    /* Pricing / Services */
     .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-top: 40px; }
     .card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 40px; display: flex; flex-direction: column; position: relative; transition: 0.3s; }
     .card:hover { border-color: var(--primary); transform: translateY(-5px); }
@@ -84,9 +71,7 @@
     .price { font-size: 3rem; font-weight: 800; color: #fff; margin-bottom: 24px; line-height: 1; }
     .features { list-style: none; margin-bottom: 30px; flex-grow: 1; }
     .features li { margin-bottom: 12px; color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: flex-start; gap: 10px; }
-    .features li::before { content: '✓'; color: var(--primary); font-weight: bold; }
-
-    /* Modals (Terms & Privacy) */
+    .features li::before { content: '\2713'; color: var(--primary); font-weight: bold; }
     .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
     .modal-content { background-color: var(--bg-card); margin: 5% auto; padding: 40px; border: 1px solid var(--border); width: 90%; max-width: 800px; border-radius: 16px; color: var(--text-muted); }
     .modal-content h2 { color: #fff; margin-bottom: 24px; }
@@ -95,15 +80,11 @@
     .modal-content ul { padding-left: 20px; }
     .close { color: #fff; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
     .close:hover { color: var(--primary); }
-    
     .legal-highlight { background: rgba(16, 185, 129, 0.05); border-left: 4px solid var(--primary); padding: 16px; margin-bottom: 24px; color: #fff; }
-
-    /* Footer */
     .footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; margin-top: 60px; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
     .footer-links { margin-top: 16px; display: flex; justify-content: center; gap: 20px; }
     .footer-links a { color: var(--primary); text-decoration: none; cursor: pointer; }
     .footer-links a:hover { text-decoration: underline; }
-
     @media (max-width: 768px) {
       .hero h1 { font-size: 2.5rem; }
       .nav { display: none; }
@@ -111,7 +92,6 @@
   </style>
 </head>
 <body>
-
   <header class="site-header">
     <div class="container header-inner">
       <div class="brand">
@@ -144,7 +124,6 @@
       <p style="text-align: center; color: var(--text-muted); margin-bottom: 40px;">Select the depth of technical analysis required for your systems.</p>
       
       <div class="pricing-grid">
-        
         <div class="card">
           <h3>Basic Vulnerability Audit</h3>
           <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Standard 5-day SLA</p>
@@ -184,7 +163,6 @@
           </ul>
           <a href="ВСТАВЬ_СЮДА_ССЫЛКУ_ИЗ_PAYPAL_НА_300" class="btn btn-primary full-width" target="_blank">Order Advanced Setup</a>
         </div>
-
       </div>
     </section>
   </main>
@@ -193,20 +171,15 @@
     <div class="modal-content">
       <span class="close" onclick="document.getElementById('termsModal').style.display='none'">&times;</span>
       <h2>Terms of Service & Delivery</h2>
-      
       <div class="legal-highlight">
         <strong>Binding Agreement:</strong> By executing a payment via PayPal, the Client agrees that they are purchasing a custom, B2B digital consulting service (IT Infrastructure Audit). This is NOT a physical product or an automated software subscription.
       </div>
-
       <h3>1. Scope of Work</h3>
       <p>Mirror Networks provides technical consulting, vulnerability scanning, and infrastructure hardening services. The specific scope is defined by the package selected at checkout.</p>
-
       <h3>2. Proof of Delivery & Fulfillment</h3>
       <p>The service is strictly digital. Fulfillment and completion of the service are legally defined as the moment the final <strong>Technical Audit Report (in PDF format)</strong> is sent to the Client's email address associated with their PayPal payment.</p>
-
       <h3>3. Refund & Chargeback Policy</h3>
       <p>Due to the irrevocable nature of custom technical consulting and security audits, <strong>all sales are final and non-refundable</strong> once the diagnostic work has commenced. By paying for this service, you acknowledge that you waive the right to request a refund based on "item not received" once the final PDF report is dispatched to your email. We log all server activity and email dispatch records to provide proof of delivery to payment processors.</p>
-
       <h3>4. Independent Contractor Status</h3>
       <p>Mirror Networks operates as an independent freelance contractor (Individual Professional Service). We do not assume liability for pre-existing vulnerabilities in the Client's infrastructure.</p>
     </div>
