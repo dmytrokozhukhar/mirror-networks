@@ -1,170 +1,225 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Mirror Networks — Web Security & Infrastructure Setup</title>
-  <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <meta name="description" content="Mirror Networks provides professional web application security audits and network infrastructure hardening for businesses.">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mirror Networks — IT Infrastructure & Security Audits</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #0a0f18;
+      --bg-card: #111827;
+      --primary: #10b981; /* Твердый зеленый вместо неонового */
+      --primary-hover: #059669;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border: rgba(16, 185, 129, 0.2);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 80px 0; }
+
+    /* Header */
+    .site-header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10, 15, 24, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+    }
+    .header-inner { display: flex; justify-content: space-between; align-items: center; }
+    .brand { font-size: 1.2rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; }
+    .brand span { color: var(--primary); }
+    .nav { display: flex; gap: 24px; }
+    .nav a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
+    .nav a:hover { color: var(--primary); }
+
+    /* Hero */
+    .hero { text-align: center; padding: 100px 0 60px; }
+    .hero-badge {
+      display: inline-block; background: rgba(16, 185, 129, 0.1); color: var(--primary);
+      padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px;
+    }
+    .hero h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 20px; font-weight: 800; }
+    .hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 40px; }
+
+    /* Buttons */
+    .btn {
+      display: inline-block; padding: 14px 28px; border-radius: 8px; font-weight: 600; text-align: center; text-decoration: none; cursor: pointer; transition: 0.3s; border: none; font-size: 1rem;
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+    .full-width { width: 100%; }
+
+    /* Pricing / Services */
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-top: 40px; }
+    .card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 40px; display: flex; flex-direction: column; position: relative; transition: 0.3s; }
+    .card:hover { border-color: var(--primary); transform: translateY(-5px); }
+    .card.popular { border: 2px solid var(--primary); }
+    .popular-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #fff; padding: 4px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; }
+    .card h3 { font-size: 1.5rem; margin-bottom: 10px; }
+    .price { font-size: 3rem; font-weight: 800; color: #fff; margin-bottom: 24px; line-height: 1; }
+    .features { list-style: none; margin-bottom: 30px; flex-grow: 1; }
+    .features li { margin-bottom: 12px; color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: flex-start; gap: 10px; }
+    .features li::before { content: '✓'; color: var(--primary); font-weight: bold; }
+
+    /* Modals (Terms & Privacy) */
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+    .modal-content { background-color: var(--bg-card); margin: 5% auto; padding: 40px; border: 1px solid var(--border); width: 90%; max-width: 800px; border-radius: 16px; color: var(--text-muted); }
+    .modal-content h2 { color: #fff; margin-bottom: 24px; }
+    .modal-content h3 { color: #fff; margin: 24px 0 12px; font-size: 1.1rem; }
+    .modal-content p, .modal-content ul { margin-bottom: 16px; font-size: 0.95rem; }
+    .modal-content ul { padding-left: 20px; }
+    .close { color: #fff; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+    .close:hover { color: var(--primary); }
+    
+    .legal-highlight { background: rgba(16, 185, 129, 0.05); border-left: 4px solid var(--primary); padding: 16px; margin-bottom: 24px; color: #fff; }
+
+    /* Footer */
+    .footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; margin-top: 60px; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
+    .footer-links { margin-top: 16px; display: flex; justify-content: center; gap: 20px; }
+    .footer-links a { color: var(--primary); text-decoration: none; cursor: pointer; }
+    .footer-links a:hover { text-decoration: underline; }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.5rem; }
+      .nav { display: none; /* Simplification for mobile */ }
+    }
+  </style>
 </head>
 <body>
+
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="#">Mirror Networks<span class="dot">.</span></a>
+      <div class="brand">Mirror <span>Networks</span></div>
       <nav class="nav">
         <a href="#services">Services</a>
-        <a href="#process">How It Works</a>
-        <a href="#faq">FAQ</a>
-        <a href="mailto:billing@mirrornetworks.example" class="nav-btn">Contact</a>
+        <a href="#process">Process</a>
+        <a href="#" onclick="document.getElementById('termsModal').style.display='block'; return false;">Terms</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="container hero-inner">
-        <div class="hero-content">
-          <div class="badge">B2B Infrastructure Solutions</div>
-          <h1>Secure Your Digital Assets with <span class="highlight">Precision</span></h1>
-          <p class="lead">Professional vulnerability assessments, network hardening, and risk mitigation for your business operations. Done-for-you technical setup.</p>
-          <div class="hero-cta">
-            <a class="btn primary btn-large" href="#services">View Service Packages</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="process" class="section bg-light">
-      <div class="container">
-        <div class="section-header">
-          <h2>Our Delivery Process</h2>
-          <p class="section-lead">Transparent, secure, and fully documented.</p>
-        </div>
-        <div class="trust-grid">
-          <div class="trust-item">
-            <div class="trust-icon">🔍</div>
-            <h3>1. Deep Audit</h3>
-            <p>We analyze your current setup, cryptography standards, and wireless security protocols to identify vulnerabilities.</p>
-          </div>
-          <div class="trust-item">
-            <div class="trust-icon">⚙️</div>
-            <h3>2. Hardening Setup</h3>
-            <p>Implementation of security patches, access controls, and infrastructure optimization based on the audit.</p>
-          </div>
-          <div class="trust-item">
-            <div class="trust-icon">📄</div>
-            <h3>3. Final Handover</h3>
-            <p>You receive a comprehensive PDF report detailing the completed work, fulfilling our service agreement.</p>
-          </div>
-        </div>
-      </div>
+    <section class="hero container">
+      <div class="hero-badge">B2B Security & Infrastructure</div>
+      <h1>Secure Your Networks.<br>Mitigate IT Risks.</h1>
+      <p>Professional network security audits, cryptography assessments, and infrastructure hardening. Done-for-you technical solutions with comprehensive reporting.</p>
+      <a href="#services" class="btn btn-primary">View Service Tiers</a>
     </section>
 
     <section id="services" class="section container">
-      <div class="section-header">
-        <h2>Infrastructure Packages</h2>
-        <p class="section-lead">Select the configuration level required for your project.</p>
-      </div>
+      <h2 style="text-align: center; font-size: 2rem; margin-bottom: 10px;">Infrastructure Audit Packages</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 40px;">Select the depth of technical analysis required for your systems.</p>
       
-      <div class="grid pricing-grid">
-        <article class="card">
-          <div class="card-header">
-            <h3>Basic Security Audit</h3>
-            <p class="target-audience">Standard 5-day delivery</p>
-            <p class="price">€230</p>
-          </div>
-          <div class="card-body">
-            <ul class="features">
-              <li>✅ External vulnerability scan</li>
-              <li>✅ SSL/TLS configuration check</li>
-              <li>✅ Basic risk theory assessment</li>
-              <li>✅ Final PDF Security Report</li>
-              <li class="disabled">❌ Express Delivery</li>
-              <li class="disabled">❌ Post-setup support</li>
-            </ul>
-          </div>
-          <div class="card-footer">
-            <button class="btn primary full-width invoice-btn" data-package="Basic Security Audit" data-price="230">Request Invoice</button>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card-header">
-            <h3>Priority Security Audit</h3>
-            <p class="target-audience">Express 48h delivery</p>
-            <p class="price">€250</p>
-          </div>
-          <div class="card-body">
-            <ul class="features">
-              <li>✅ All Basic Audit features</li>
-              <li>✅ <strong>Priority 48-hour delivery</strong></li>
-              <li>✅ Immediate risk mitigation plan</li>
-              <li>✅ Final PDF Security Report</li>
-              <li class="disabled">❌ Post-setup support</li>
-            </ul>
-          </div>
-          <div class="card-footer">
-            <button class="btn primary full-width invoice-btn" data-package="Priority Security Audit" data-price="250">Request Invoice</button>
-          </div>
-        </article>
-
-        <article class="card popular">
-          <div class="popular-badge">Complete Setup</div>
-          <div class="card-header">
-            <h3>Advanced Hardening</h3>
-            <p class="target-audience">Audit + Implementation</p>
-            <p class="price">€300</p>
-          </div>
-          <div class="card-body">
-            <ul class="features">
-              <li>✅ Deep Information Security audit</li>
-              <li>✅ Active system hardening & patching</li>
-              <li>✅ Access management configuration</li>
-              <li>✅ Detailed Architecture Report</li>
-              <li>✅ <strong>30-day technical maintenance</strong></li>
-            </ul>
-          </div>
-          <div class="card-footer">
-            <button class="btn primary full-width invoice-btn" data-package="Advanced Hardening & Support" data-price="300">Request Invoice</button>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section id="faq" class="section container">
-      <div class="section-header">
-        <h2>Service & Billing Terms</h2>
-      </div>
-      <div class="faq-list">
-        <div class="faq-item">
-          <button class="faq-question">How does the billing process work?</button>
-          <div class="faq-answer"><p>Click "Request Invoice" on your chosen package. We will send a formal B2B invoice via PayPal Business. Work begins immediately upon payment confirmation.</p></div>
+      <div class="pricing-grid">
+        
+        <div class="card">
+          <h3>Basic Vulnerability Audit</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Standard 5-day SLA</p>
+          <div class="price">€230</div>
+          <ul class="features">
+            <li>External network vulnerability scanning</li>
+            <li>Basic cryptography standard review</li>
+            <li>Information security risk assessment</li>
+            <li>Final PDF Delivery: Threat Analysis Report</li>
+          </ul>
+          <a href="ТВОЯ_ССЫЛКА_PAYPAL_230" class="btn btn-primary full-width" target="_blank">Order Basic Audit</a>
         </div>
-        <div class="faq-item">
-          <button class="faq-question">What is the refund policy?</button>
-          <div class="faq-answer"><p>Due to the nature of custom digital configuration and auditing, all services are strictly non-refundable once the final PDF report and configuration details are delivered to your email.</p></div>
+
+        <div class="card popular">
+          <div class="popular-badge">Priority Delivery</div>
+          <h3>Express Risk Mitigation</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Fast-tracked 48-hour SLA</p>
+          <div class="price">€250</div>
+          <ul class="features">
+            <li>Everything in Basic Audit</li>
+            <li><strong>Priority 48-hour turnaround</strong></li>
+            <li>Wireless network security evaluation</li>
+            <li>Final PDF Delivery: Actionable Hardening Plan</li>
+          </ul>
+          <a href="ТВОЯ_ССЫЛКА_PAYPAL_250" class="btn btn-primary full-width" target="_blank">Order Express Audit</a>
         </div>
+
+        <div class="card">
+          <h3>Advanced System Hardening</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Audit + Technical Setup</p>
+          <div class="price">€300</div>
+          <ul class="features">
+            <li>Deep infrastructure & risk theory analysis</li>
+            <li>Active server hardening configuration</li>
+            <li>Custom security policy development</li>
+            <li>Final PDF Delivery: Complete Architecture Docs</li>
+          </ul>
+          <a href="ТВОЯ_ССЫЛКА_PAYPAL_300" class="btn btn-primary full-width" target="_blank">Order Advanced Setup</a>
+        </div>
+
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <div class="footer-info">
-        <h4>Mirror Networks</h4>
-        <p>Email: <a href="mailto:billing@mirrornetworks.example">billing@mirrornetworks.example</a></p>
+  <div id="termsModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="document.getElementById('termsModal').style.display='none'">&times;</span>
+      <h2>Terms of Service & Delivery</h2>
+      
+      <div class="legal-highlight">
+        <strong>Binding Agreement:</strong> By executing a payment via PayPal, the Client agrees that they are purchasing a custom, B2B digital consulting service (IT Infrastructure Audit). This is NOT a physical product or an automated software subscription.
       </div>
-      <div class="footer-links">
-        <a href="#">Terms of Service</a>
-        <a href="#">Privacy Policy</a>
-      </div>
+
+      <h3>1. Scope of Work</h3>
+      <p>Mirror Networks provides technical consulting, vulnerability scanning, and infrastructure hardening services. The specific scope is defined by the package selected at checkout.</p>
+
+      <h3>2. Proof of Delivery & Fulfillment</h3>
+      <p>The service is strictly digital. Fulfillment and completion of the service are legally defined as the moment the final <strong>Technical Audit Report (in PDF format)</strong> is sent to the Client's email address associated with their PayPal payment.</p>
+
+      <h3>3. Refund & Chargeback Policy</h3>
+      <p>Due to the irrevocable nature of custom technical consulting and security audits, <strong>all sales are final and non-refundable</strong> once the diagnostic work has commenced. By paying for this service, you acknowledge that you waive the right to request a refund based on "item not received" once the final PDF report is dispatched to your email. We log all server activity and email dispatch records to provide proof of delivery to payment processors.</p>
+
+      <h3>4. Independent Contractor Status</h3>
+      <p>Mirror Networks operates as an independent freelance contractor (Individual Professional Service). We do not assume liability for pre-existing vulnerabilities in the Client's infrastructure.</p>
     </div>
-    <div class="footer-bottom">
-      <p>© 2026 Mirror Networks. All B2B transactions are processed via secure invoicing.</p>
+  </div>
+
+  <div id="privacyModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="document.getElementById('privacyModal').style.display='none'">&times;</span>
+      <h2>Privacy Policy</h2>
+      <p>Your privacy is strictly respected. As a cybersecurity service, we adhere to the principle of least privilege regarding your data.</p>
+      <h3>Data Collection</h3>
+      <p>We collect only the email address and technical parameters strictly necessary to perform the requested audit. Payment processing is handled entirely by PayPal; we never see or store your credit card information.</p>
+      <h3>Audit Confidentiality</h3>
+      <p>All vulnerability reports, network layouts, and cryptography assessments generated during our service are strictly confidential. We do not share, sell, or disclose your infrastructure details to any third parties.</p>
+    </div>
+  </div>
+
+  <footer class="footer container">
+    <div>© 2026 Mirror Networks. Professional B2B IT Consulting.</div>
+    <div class="footer-links">
+      <a onclick="document.getElementById('termsModal').style.display='block'">Terms of Service</a>
+      <a onclick="document.getElementById('privacyModal').style.display='block'">Privacy Policy</a>
+      <a href="mailto:billing@mirrornetworks.example">Contact Billing</a>
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    // Close modals when clicking outside of the content box
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal')) {
+        event.target.style.display = "none";
+      }
+    }
+  </script>
 </body>
 </html>
