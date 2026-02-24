@@ -1,20 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
   
-  // 1. Handle checkout button clicks
-  const checkoutButtons = document.querySelectorAll('.checkout-btn');
+  // 1. Logic for Invoice Request
+  const invoiceButtons = document.querySelectorAll('.invoice-btn');
+  const contactEmail = 'billing@mirrornetworks.example'; // Замени на свой реальный email
   
-  checkoutButtons.forEach(button => {
+  invoiceButtons.forEach(button => {
     button.addEventListener('click', (e) => {
       e.preventDefault();
       
-      const checkoutUrl = button.getAttribute('data-checkout-link');
+      const packageName = button.getAttribute('data-package');
+      const price = button.getAttribute('data-price');
       
-      if(checkoutUrl && checkoutUrl.includes('http')) {
-        window.location.href = checkoutUrl;
-      } else {
-        alert('Configuration error: Checkout link is not set up.');
-        console.error('Missing checkout URL in data attribute');
-      }
+      // Формируем предзаполненное письмо
+      const subject = encodeURIComponent(`Invoice Request: ${packageName}`);
+      const body = encodeURIComponent(
+        `Hello Mirror Networks Team,\n\nI would like to request an invoice for the following B2B service:\n\n` +
+        `- Package: ${packageName}\n` +
+        `- Price: €${price}\n\n` +
+        `Please send the PayPal invoice to this email address. Let me know what details you need from me to start the configuration.\n\nBest regards,`
+      );
+      
+      window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
     });
   });
 
@@ -33,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 3. Smooth scrolling for navigation
+  // 3. Smooth scrolling
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href');
