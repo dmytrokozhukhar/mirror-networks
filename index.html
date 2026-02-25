@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Mirror Networks — IT Infrastructure & Security Audits</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  
   <style>
     :root {
       --bg-dark: #0a0f18;
@@ -61,6 +60,7 @@
     }
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+    .btn-primary:disabled { background: #374151; color: #9ca3af; cursor: not-allowed; transform: none; box-shadow: none; }
     .full-width { width: 100%; }
     .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-top: 40px; }
     .card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 40px; display: flex; flex-direction: column; position: relative; transition: 0.3s; }
@@ -73,14 +73,18 @@
     .features li { margin-bottom: 12px; color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: flex-start; gap: 10px; }
     .features li::before { content: '\2713'; color: var(--primary); font-weight: bold; }
     .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
-    .modal-content { background-color: var(--bg-card); margin: 5% auto; padding: 40px; border: 1px solid var(--border); width: 90%; max-width: 800px; border-radius: 16px; color: var(--text-muted); }
+    .modal-content { background-color: var(--bg-card); margin: 5% auto; padding: 40px; border: 1px solid var(--border); width: 90%; max-width: 800px; border-radius: 16px; color: var(--text-muted); position: relative; }
     .modal-content h2 { color: #fff; margin-bottom: 24px; }
     .modal-content h3 { color: #fff; margin: 24px 0 12px; font-size: 1.1rem; }
     .modal-content p, .modal-content ul { margin-bottom: 16px; font-size: 0.95rem; }
     .modal-content ul { padding-left: 20px; }
-    .close { color: #fff; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+    .close { color: #fff; position: absolute; top: 20px; right: 30px; font-size: 28px; font-weight: bold; cursor: pointer; }
     .close:hover { color: var(--primary); }
     .legal-highlight { background: rgba(16, 185, 129, 0.05); border-left: 4px solid var(--primary); padding: 16px; margin-bottom: 24px; color: #fff; }
+    .checkbox-container { display: flex; align-items: flex-start; gap: 12px; margin: 30px 0; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
+    .checkbox-container input { margin-top: 4px; width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
+    .checkbox-container label { font-size: 0.9rem; color: var(--text-main); cursor: pointer; line-height: 1.5; }
+    .checkbox-container a { color: var(--primary); text-decoration: underline; }
     .footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; margin-top: 60px; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
     .footer-links { margin-top: 16px; display: flex; justify-content: center; gap: 20px; }
     .footer-links a { color: var(--primary); text-decoration: none; cursor: pointer; }
@@ -88,6 +92,7 @@
     @media (max-width: 768px) {
       .hero h1 { font-size: 2.5rem; }
       .nav { display: none; }
+      .modal-content { width: 95%; padding: 24px; margin: 10% auto; }
     }
   </style>
 </head>
@@ -134,7 +139,7 @@
             <li>Information security risk assessment</li>
             <li>Final PDF Delivery: Threat Analysis Report</li>
           </ul>
-          <a href="ВСТАВЬ_СЮДА_ССЫЛКУ_ИЗ_PAYPAL_НА_230" class="btn btn-primary full-width" target="_blank">Order Basic Audit</a>
+          <button class="btn btn-primary full-width order-btn" data-paypal-link="ТВОЯ_ССЫЛКА_230">Order Basic Audit</button>
         </div>
 
         <div class="card popular">
@@ -148,7 +153,7 @@
             <li>Wireless network security evaluation</li>
             <li>Final PDF Delivery: Actionable Hardening Plan</li>
           </ul>
-          <a href="ВСТАВЬ_СЮДА_ССЫЛКУ_ИЗ_PAYPAL_НА_250" class="btn btn-primary full-width" target="_blank">Order Express Audit</a>
+          <button class="btn btn-primary full-width order-btn" data-paypal-link="ТВОЯ_ССЫЛКА_250">Order Express Audit</button>
         </div>
 
         <div class="card">
@@ -161,27 +166,41 @@
             <li>Custom security policy development</li>
             <li>Final PDF Delivery: Complete Architecture Docs</li>
           </ul>
-          <a href="ВСТАВЬ_СЮДА_ССЫЛКУ_ИЗ_PAYPAL_НА_300" class="btn btn-primary full-width" target="_blank">Order Advanced Setup</a>
+          <button class="btn btn-primary full-width order-btn" data-paypal-link="ТВОЯ_ССЫЛКА_300">Order Advanced Setup</button>
         </div>
       </div>
     </section>
   </main>
 
+  <div id="checkoutModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeCheckout">&times;</span>
+      <h2>Finalize Your Order</h2>
+      <div class="legal-highlight">
+        <strong>Binding Agreement:</strong> You are purchasing a custom, B2B digital consulting service. This is NOT a physical product or an automated software subscription.
+      </div>
+      <p>By proceeding to payment, you acknowledge that the service is strictly digital. Fulfillment and completion of the service are legally defined as the moment the final <strong>Technical Audit Report (in PDF format)</strong> is sent to your email address.</p>
+      <p>Due to the irrevocable nature of custom technical consulting, <strong>all sales are final and non-refundable</strong> once the diagnostic work has commenced.</p>
+      
+      <div class="checkbox-container">
+        <input type="checkbox" id="agreeTerms">
+        <label for="agreeTerms">I have read and agree to the <a href="#" onclick="document.getElementById('termsModal').style.display='block'; return false;">Terms of Service</a> and <a href="#" onclick="document.getElementById('privacyModal').style.display='block'; return false;">Privacy Policy</a>. I understand this digital B2B service is non-refundable upon delivery.</label>
+      </div>
+
+      <button id="proceedToPay" class="btn btn-primary full-width" disabled>Proceed to Secure PayPal Checkout</button>
+    </div>
+  </div>
+
   <div id="termsModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="document.getElementById('termsModal').style.display='none'">&times;</span>
       <h2>Terms of Service & Delivery</h2>
-      <div class="legal-highlight">
-        <strong>Binding Agreement:</strong> By executing a payment via PayPal, the Client agrees that they are purchasing a custom, B2B digital consulting service (IT Infrastructure Audit). This is NOT a physical product or an automated software subscription.
-      </div>
       <h3>1. Scope of Work</h3>
-      <p>Mirror Networks provides technical consulting, vulnerability scanning, and infrastructure hardening services. The specific scope is defined by the package selected at checkout.</p>
-      <h3>2. Proof of Delivery & Fulfillment</h3>
-      <p>The service is strictly digital. Fulfillment and completion of the service are legally defined as the moment the final <strong>Technical Audit Report (in PDF format)</strong> is sent to the Client's email address associated with their PayPal payment.</p>
-      <h3>3. Refund & Chargeback Policy</h3>
-      <p>Due to the irrevocable nature of custom technical consulting and security audits, <strong>all sales are final and non-refundable</strong> once the diagnostic work has commenced. By paying for this service, you acknowledge that you waive the right to request a refund based on "item not received" once the final PDF report is dispatched to your email. We log all server activity and email dispatch records to provide proof of delivery to payment processors.</p>
-      <h3>4. Independent Contractor Status</h3>
-      <p>Mirror Networks operates as an independent freelance contractor (Individual Professional Service). We do not assume liability for pre-existing vulnerabilities in the Client's infrastructure.</p>
+      <p>Mirror Networks provides technical consulting, vulnerability scanning, and infrastructure hardening services.</p>
+      <h3>2. Proof of Delivery</h3>
+      <p>Fulfillment is legally defined as the moment the final Technical Audit Report is sent to the Client's email.</p>
+      <h3>3. Refund Policy</h3>
+      <p>All sales are final and non-refundable once diagnostic work has commenced.</p>
     </div>
   </div>
 
@@ -189,11 +208,7 @@
     <div class="modal-content">
       <span class="close" onclick="document.getElementById('privacyModal').style.display='none'">&times;</span>
       <h2>Privacy Policy</h2>
-      <p>Your privacy is strictly respected. As a cybersecurity service, we adhere to the principle of least privilege regarding your data.</p>
-      <h3>Data Collection</h3>
-      <p>We collect only the email address and technical parameters strictly necessary to perform the requested audit. Payment processing is handled entirely by PayPal; we never see or store your credit card information.</p>
-      <h3>Audit Confidentiality</h3>
-      <p>All vulnerability reports, network layouts, and cryptography assessments generated during our service are strictly confidential. We do not share, sell, or disclose your infrastructure details to any third parties.</p>
+      <p>We collect only the email address and technical parameters strictly necessary to perform the requested audit. Payment processing is handled entirely by PayPal.</p>
     </div>
   </div>
 
@@ -207,11 +222,42 @@
   </footer>
 
   <script>
+    const orderBtns = document.querySelectorAll('.order-btn');
+    const checkoutModal = document.getElementById('checkoutModal');
+    const closeCheckout = document.getElementById('closeCheckout');
+    const agreeTerms = document.getElementById('agreeTerms');
+    const proceedToPay = document.getElementById('proceedToPay');
+    let currentPayLink = '';
+
+    orderBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentPayLink = btn.getAttribute('data-paypal-link');
+        agreeTerms.checked = false;
+        proceedToPay.disabled = true;
+        checkoutModal.style.display = 'block';
+      });
+    });
+
+    closeCheckout.addEventListener('click', () => {
+      checkoutModal.style.display = 'none';
+      currentPayLink = '';
+    });
+
+    agreeTerms.addEventListener('change', (e) => {
+      proceedToPay.disabled = !e.target.checked;
+    });
+
+    proceedToPay.addEventListener('click', () => {
+      if (currentPayLink && agreeTerms.checked) {
+        window.location.href = currentPayLink;
+      }
+    });
+
     window.onclick = function(event) {
       if (event.target.classList.contains('modal')) {
-        event.target.style.display = "none";
+        event.target.style.display = 'none';
       }
-    }
+    };
   </script>
 </body>
 </html>
