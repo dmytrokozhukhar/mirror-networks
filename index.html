@@ -8,61 +8,96 @@
   <script src="https://www.paypal.com/sdk/js?client-id=test&currency=EUR"></script>
   <style>
     :root {
-      --bg-dark: #0a0f18; --bg-card: #111827; --primary: #10b981;
-      --primary-hover: #059669; --text-main: #f3f4f6; --text-muted: #9ca3af;
+      --bg-dark: #0a0f18;
+      --bg-card: #111827;
+      --primary: #10b981;
+      --primary-hover: #059669;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
       --border: rgba(16, 185, 129, 0.2);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
     .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
     .section { padding: 80px 0; }
-    .site-header { position: sticky; top: 0; z-index: 100; background: rgba(10, 15, 24, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 16px 0; }
+    .site-header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10, 15, 24, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+    }
     .header-inner { display: flex; justify-content: space-between; align-items: center; }
-    .brand { display: flex; align-items: center; gap: 12px; font-size: 1.2rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; }
+    .brand { 
+      display: flex; align-items: center; gap: 12px; font-size: 1.2rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; 
+    }
     .brand span { color: var(--primary); }
     .nav { display: flex; gap: 24px; }
     .nav a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
     .nav a:hover { color: var(--primary); }
-
     .hero { text-align: center; padding: 100px 0 60px; }
-    .hero-badge { display: inline-block; background: rgba(16, 185, 129, 0.1); color: var(--primary); padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px; }
+    .hero-badge {
+      display: inline-block; background: rgba(16, 185, 129, 0.1); color: var(--primary);
+      padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px;
+    }
     .hero h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 20px; font-weight: 800; }
     .hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 40px; }
-    
     .btn { display: inline-block; padding: 14px 28px; border-radius: 8px; font-weight: 600; text-align: center; text-decoration: none; cursor: pointer; transition: 0.3s; border: none; font-size: 1rem; }
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+    .btn-primary:disabled { background: #374151; color: #9ca3af; cursor: not-allowed; transform: none; box-shadow: none; }
     .full-width { width: 100%; }
-
     .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-top: 40px; }
     .card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 40px; display: flex; flex-direction: column; position: relative; transition: 0.3s; }
     .card:hover { border-color: var(--primary); transform: translateY(-5px); }
     .card.popular { border: 2px solid var(--primary); }
     .popular-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #fff; padding: 4px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; }
-    
+    .card h3 { font-size: 1.5rem; margin-bottom: 10px; }
     .price { font-size: 3rem; font-weight: 800; color: #fff; margin-bottom: 24px; line-height: 1; }
     .features { list-style: none; margin-bottom: 30px; flex-grow: 1; }
-    .features li { margin-bottom: 12px; color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: flex-start; gap: 10px; text-align: left; }
+    .features li { margin-bottom: 12px; color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: flex-start; gap: 10px; }
     .features li::before { content: '\2713'; color: var(--primary); font-weight: bold; }
-
-    /* FAQ Logic Styles */
+    
+    /* FAQ & About Styles */
     .faq-grid { display: flex; flex-direction: column; gap: 20px; max-width: 800px; margin: 0 auto; }
-    .faq-item { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 24px; cursor: pointer; text-align: left; transition: 0.3s; }
-    .faq-item h3 { color: #fff; font-size: 1.1rem; pointer-events: none; }
-    .faq-answer { display: none; margin-top: 15px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; pointer-events: none; }
-    .faq-item.active { border-color: var(--primary); }
-    .faq-item.active .faq-answer { display: block; }
+    .faq-item { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 24px; }
+    .faq-item h3 { color: #fff; font-size: 1.1rem; margin-bottom: 10px; }
+    .faq-item p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; }
+    .about-block { text-align: center; max-width: 800px; margin: 0 auto; padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .contact-block { text-align: center; padding: 60px 0; margin-bottom: 40px; }
+    .contact-block a { color: var(--primary); text-decoration: none; font-weight: 600; }
 
     /* Modals */
-    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(5px); }
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
     .modal-content { background-color: var(--bg-card); margin: 5% auto; padding: 40px; border: 1px solid var(--border); width: 90%; max-width: 800px; border-radius: 16px; color: var(--text-muted); position: relative; }
+    .modal-content h2 { color: #fff; margin-bottom: 24px; }
+    .modal-content h3 { color: #fff; margin: 24px 0 12px; font-size: 1.1rem; }
+    .modal-content p, .modal-content ul { margin-bottom: 16px; font-size: 0.95rem; }
+    .modal-content ul { padding-left: 20px; }
     .close { color: #fff; position: absolute; top: 20px; right: 30px; font-size: 28px; font-weight: bold; cursor: pointer; }
+    .close:hover { color: var(--primary); }
     .legal-highlight { background: rgba(16, 185, 129, 0.05); border-left: 4px solid var(--primary); padding: 16px; margin-bottom: 24px; color: #fff; }
     .checkbox-container { display: flex; align-items: flex-start; gap: 12px; margin: 30px 0; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
     .checkbox-container input { margin-top: 4px; width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
+    .checkbox-container label { font-size: 0.9rem; color: var(--text-main); cursor: pointer; line-height: 1.5; }
+    .checkbox-container a { color: var(--primary); text-decoration: underline; }
     
     .footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; margin-top: 60px; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
+    .footer-links { margin-top: 16px; display: flex; justify-content: center; gap: 20px; }
+    .footer-links a { color: var(--primary); text-decoration: none; cursor: pointer; }
+    .footer-links a:hover { text-decoration: underline; }
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.5rem; }
+      .nav { display: none; }
+      .modal-content { width: 95%; padding: 24px; margin: 10% auto; }
+    }
   </style>
 </head>
 <body>
@@ -80,8 +115,8 @@
       <nav class="nav">
         <a href="#services">Services</a>
         <a href="#faq">FAQ</a>
-        <a href="#" onclick="openModal('termsModal')">Terms</a>
-        <a href="#" onclick="openModal('privacyModal')">Privacy</a>
+        <a href="#" onclick="document.getElementById('termsModal').style.display='block'; return false;">Terms</a>
+        <a href="#" onclick="document.getElementById('privacyModal').style.display='block'; return false;">Privacy</a>
       </nav>
     </div>
   </header>
@@ -95,6 +130,9 @@
     </section>
 
     <section id="services" class="section container">
+      <h2 style="text-align: center; font-size: 2rem; margin-bottom: 10px;">Infrastructure Audit Packages</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 40px;">Select the depth of technical analysis required for your systems.</p>
+      
       <div class="pricing-grid">
         <div class="card">
           <h3>Basic Vulnerability Audit</h3>
@@ -103,9 +141,10 @@
           <ul class="features">
             <li>External network vulnerability scanning</li>
             <li>Basic cryptography standard review</li>
+            <li>Information security risk assessment</li>
             <li>Final PDF Delivery: Threat Analysis Report</li>
           </ul>
-          <button class="btn btn-primary full-width" onclick="openCheckout(230)">Order Basic Audit</button>
+          <button class="btn btn-primary full-width order-btn" data-price="230">Order Basic Audit</button>
         </div>
 
         <div class="card popular">
@@ -115,87 +154,188 @@
           <div class="price">€250</div>
           <ul class="features">
             <li>Everything in Basic Audit</li>
+            <li><strong>Priority 5-day turnaround</strong></li>
             <li>Wireless network security evaluation</li>
             <li>Final PDF Delivery: Actionable Hardening Plan</li>
           </ul>
-          <button class="btn btn-primary full-width" onclick="openCheckout(250)">Order Express Audit</button>
+          <button class="btn btn-primary full-width order-btn" data-price="250">Order Express Audit</button>
         </div>
 
         <div class="card">
-          <h3>Advanced Hardening</h3>
+          <h3>Advanced System Hardening</h3>
           <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">14-day comprehensive delivery</p>
           <div class="price">€300</div>
           <ul class="features">
+            <li>Deep infrastructure & risk theory analysis</li>
             <li>Active server hardening configuration</li>
             <li>Custom security policy development</li>
             <li>Final PDF Delivery: Complete Architecture Docs</li>
           </ul>
-          <button class="btn btn-primary full-width" onclick="openCheckout(300)">Order Advanced Setup</button>
+          <button class="btn btn-primary full-width order-btn" data-price="300">Order Advanced Setup</button>
         </div>
       </div>
     </section>
 
     <section id="faq" class="section container">
-      <h2 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">FAQ</h2>
+      <h2 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">Frequently Asked Questions</h2>
       <div class="faq-grid">
-        <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-item">
           <h3>How does the audit process work?</h3>
-          <div class="faq-answer">Once your payment is approved, our team begins the diagnostic process. The final PDF report is delivered within the specified SLA period.</div>
+          <p>Once your payment is approved, our security team begins the external diagnostic process within 24 hours. We conduct passive reconnaissance and vulnerability scanning strictly on the provided IP address. The final PDF report is delivered to your email within the specified SLA.</p>
         </div>
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <h3>What is the deliverable?</h3>
-          <div class="faq-answer">A professionally formatted PDF document including executive summary, technical findings, and firewall remediation steps.</div>
+        <div class="faq-item">
+          <h3>What exactly is included in the deliverable?</h3>
+          <p>You will receive a highly concentrated, professionally formatted PDF document. It includes an executive summary, detailed technical findings (exposed ports, SSL/TLS cryptographic status), risk theory analysis, and specific, actionable firewall remediation steps.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What if my technical team has questions?</h3>
+          <p>We provide post-audit support. If your system administrators require clarification regarding the remediation steps or firewall configurations detailed in the report, email us directly before making structural network changes.</p>
         </div>
       </div>
+    </section>
+
+    <section class="container">
+      <div class="about-block">
+        <h2 style="font-size: 1.8rem; margin-bottom: 20px;">About Mirror Networks</h2>
+        <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6;">We provide high-quality B2B IT security audits designed to help corporate entities identify blind spots in their external infrastructure. We rely on industry-standard tools and risk theory to deliver clear, actionable intelligence directly to your technical teams.</p>
+      </div>
+    </section>
+
+    <section class="container contact-block">
+      <h2 style="font-size: 1.8rem; margin-bottom: 16px;">Questions?</h2>
+      <p style="color: var(--text-muted);">Email us at: <a href="mailto:kozhukhar.dmytro@outlook.com">kozhukhar.dmytro@outlook.com</a></p>
     </section>
   </main>
 
   <div id="checkoutModal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="closeModal('checkoutModal')">&times;</span>
-      <h2>Finalize Order</h2>
-      <div class="legal-highlight"><strong>Binding Agreement:</strong> Custom B2B digital service. Non-refundable once scanning begins.</div>
-      <div class="checkbox-container">
-        <input type="checkbox" id="agreeTerms" onchange="togglePayPal(this.checked)">
-        <label for="agreeTerms">I agree to the Terms and Privacy Policy. I understand work starts immediately.</label>
+      <span class="close" id="closeCheckout">&times;</span>
+      <h2>Finalize Your Order</h2>
+      <div class="legal-highlight">
+        <strong>Binding Agreement:</strong> You are purchasing a custom, B2B digital consulting service. This is NOT a physical product or an automated software subscription.
       </div>
+      <p>By proceeding to payment, you acknowledge that the service is strictly digital. Fulfillment and completion of the service are legally defined as the moment the final <strong>Technical Audit Report (in PDF format)</strong> is sent to your email address.</p>
+      <p>Due to the irrevocable nature of custom technical consulting, <strong>all sales are final and non-refundable</strong> once the diagnostic work has commenced.</p>
+      
+      <div class="checkbox-container">
+        <input type="checkbox" id="agreeTerms">
+        <label for="agreeTerms">I have read and agree to the <a href="#" onclick="document.getElementById('termsModal').style.display='block'; return false;">Terms of Service</a> and <a href="#" onclick="document.getElementById('privacyModal').style.display='block'; return false;">Privacy Policy</a>. I understand this digital B2B service is non-refundable upon delivery.</label>
+      </div>
+
       <div id="paypal-button-container" style="display: none; margin-top: 20px;"></div>
     </div>
   </div>
 
   <div id="termsModal" class="modal">
-    <div class="modal-content"><span class="close" onclick="closeModal('termsModal')">&times;</span>
-      <h2>Terms of Service</h2>
-      <p>1. Refund: No refunds once diagnostics start.</p>
-      <p>2. Dispute: Claims during SLA period are a breach of contract.</p>
+    <div class="modal-content">
+      <span class="close" onclick="document.getElementById('termsModal').style.display='none'">&times;</span>
+      <h2>Terms and Conditions</h2>
+      
+      <div class="legal-highlight">
+        <strong>Important billing notice:</strong> Payments are processed by an individual professional service provider. Do not dispute a charge solely because you do not recognize the descriptor.
+      </div>
+
+      <h3>1. Products and Services</h3>
+      <ul>
+        <li>We provide digital B2B IT infrastructure and network security audits.</li>
+        <li><strong>Format:</strong> Delivered digitally as a highly concentrated PDF Technical Report.</li>
+        <li><strong>Delivery:</strong> Sent directly to your provided email address within the specified Service Level Agreement (SLA) timeframe (e.g., 5 or 7 days).</li>
+      </ul>
+
+      <h3>2. Strict Refund Policy</h3>
+      <p>Due to the irrevocable and custom nature of technical diagnostic consulting, <strong>all sales are final and non-refundable</strong> once the active diagnostic scanning process has commenced. The ONLY exception to this policy is if Mirror Networks experiences a verifiable technical failure on our end and is entirely unable to deliver the final Technical Audit Report. In this sole scenario, a full refund will be issued.</p>
+
+      <h3>3. Dispute Resolution & SLA Protocol</h3>
+      <p>By purchasing, you agree to respect the specified timeframe (SLA) for your audit. <strong>Opening a payment claim, dispute, or chargeback with PayPal during the active diagnostic period (before the SLA has expired) without contacting us first constitutes a direct breach of this agreement.</strong> Unjustified early disputes will not be accepted and will be contested using our server audit logs as proof of ongoing work. We review legitimate claims on a case-by-case basis only after the SLA has concluded.</p>
+
+      <h3>4. Contact Us</h3>
+      <p>Email: <a href="mailto:kozhukhar.dmytro@outlook.com" style="color: var(--primary);">kozhukhar.dmytro@outlook.com</a></p>
     </div>
   </div>
 
   <div id="privacyModal" class="modal">
-    <div class="modal-content"><span class="close" onclick="closeModal('privacyModal')">&times;</span>
+    <div class="modal-content">
+      <span class="close" onclick="document.getElementById('privacyModal').style.display='none'">&times;</span>
       <h2>Privacy Policy</h2>
-      <p>We collect only Target IP and Email for report delivery.</p>
+      <p>We comply with data protection regulations. We collect only what is strictly necessary to perform the security audit and maintain security logs as proof of delivery.</p>
+      
+      <h3>1. Information We Collect</h3>
+      <ul>
+        <li><strong>Target info:</strong> IP addresses or domains explicitly provided by you for scanning.</li>
+        <li><strong>Contact info:</strong> Your email address for the delivery of the final PDF report.</li>
+        <li><strong>Payment info:</strong> Processed securely by PayPal. We do not see or store your credit card details.</li>
+      </ul>
+
+      <h3>2. Contact Us</h3>
+      <p>Email: <a href="mailto:kozhukhar.dmytro@outlook.com" style="color: var(--primary);">kozhukhar.dmytro@outlook.com</a></p>
     </div>
   </div>
 
   <footer class="footer container">
-    <p>© 2026 Mirror Networks. <a href="mailto:kozhukhar.dmytro@outlook.com" style="color: var(--primary);">Contact Support</a></p>
+    <div>© 2026 Mirror Networks. Professional B2B IT Consulting.</div>
+    <div class="footer-links">
+      <a onclick="document.getElementById('termsModal').style.display='block'">Terms of Service</a>
+      <a onclick="document.getElementById('privacyModal').style.display='block'">Privacy Policy</a>
+      <a href="mailto:kozhukhar.dmytro@outlook.com">Contact Support & Billing</a>
+    </div>
   </footer>
 
   <script>
-    let currentPrice = 0;
-    function openModal(id) { document.getElementById(id).style.display = 'block'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    function toggleFaq(el) { el.classList.toggle('active'); }
-    function openCheckout(price) { currentPrice = price; openModal('checkoutModal'); }
-    function togglePayPal(checked) { document.getElementById('paypal-button-container').style.display = checked ? 'block' : 'none'; }
+    // Логика кнопок заказа и модалки PayPal
+    const orderBtns = document.querySelectorAll('.order-btn');
+    const checkoutModal = document.getElementById('checkoutModal');
+    const closeCheckout = document.getElementById('closeCheckout');
+    const agreeTerms = document.getElementById('agreeTerms');
+    const paypalContainer = document.getElementById('paypal-button-container');
+    
+    let currentPrice = '0.00';
 
+    orderBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentPrice = btn.getAttribute('data-price');
+        agreeTerms.checked = false;
+        paypalContainer.style.display = 'none';
+        checkoutModal.style.display = 'block';
+      });
+    });
+
+    closeCheckout.addEventListener('click', () => {
+      checkoutModal.style.display = 'none';
+      currentPrice = '0.00';
+    });
+
+    agreeTerms.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        paypalContainer.style.display = 'block';
+      } else {
+        paypalContainer.style.display = 'none';
+      }
+    });
+
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+      }
+    };
+
+    // Рендер кнопок PayPal
     paypal.Buttons({
-      createOrder: (data, actions) => actions.order.create({ purchase_units: [{ amount: { value: currentPrice } }] }),
-      onApprove: (data, actions) => actions.order.capture().then(details => { alert('Payment Successful!'); closeModal('checkoutModal'); })
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: currentPrice 
+            }
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          alert('Payment successful! Target Authorization email will be sent to: ' + details.payer.email_address);
+          checkoutModal.style.display = 'none';
+        });
+      }
     }).render('#paypal-button-container');
-
-    window.onclick = (e) => { if(e.target.className === 'modal') e.target.style.display = 'none'; }
   </script>
 </body>
 </html>
