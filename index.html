@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Mirror Networks — IT Infrastructure & Security Audits</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID_HERE&currency=EUR"></script>
   <style>
     :root {
       --bg-dark: #0a0f18;
@@ -139,7 +140,7 @@
             <li>Information security risk assessment</li>
             <li>Final PDF Delivery: Threat Analysis Report</li>
           </ul>
-          <button class="btn btn-primary full-width order-btn" data-paypal-link="ТВОЯ_ССЫЛКА_230">Order Basic Audit</button>
+          <button class="btn btn-primary full-width order-btn" data-price="230">Order Basic Audit</button>
         </div>
 
         <div class="card popular">
@@ -153,7 +154,7 @@
             <li>Wireless network security evaluation</li>
             <li>Final PDF Delivery: Actionable Hardening Plan</li>
           </ul>
-          <button class="btn btn-primary full-width order-btn" data-paypal-link="ТВОЯ_ССЫЛКА_250">Order Express Audit</button>
+          <button class="btn btn-primary full-width order-btn" data-price="250">Order Express Audit</button>
         </div>
 
         <div class="card">
@@ -166,7 +167,7 @@
             <li>Custom security policy development</li>
             <li>Final PDF Delivery: Complete Architecture Docs</li>
           </ul>
-          <button class="btn btn-primary full-width order-btn" data-paypal-link="ТВОЯ_ССЫЛКА_300">Order Advanced Setup</button>
+          <button class="btn btn-primary full-width order-btn" data-price="300">Order Advanced Setup</button>
         </div>
       </div>
     </section>
@@ -187,7 +188,7 @@
         <label for="agreeTerms">I have read and agree to the <a href="#" onclick="document.getElementById('termsModal').style.display='block'; return false;">Terms of Service</a> and <a href="#" onclick="document.getElementById('privacyModal').style.display='block'; return false;">Privacy Policy</a>. I understand this digital B2B service is non-refundable upon delivery.</label>
       </div>
 
-      <button id="proceedToPay" class="btn btn-primary full-width" disabled>Proceed to Secure PayPal Checkout</button>
+      <div id="paypal-button-container" style="display: none; margin-top: 20px;"></div>
     </div>
   </div>
 
@@ -226,38 +227,63 @@
     const checkoutModal = document.getElementById('checkoutModal');
     const closeCheckout = document.getElementById('closeCheckout');
     const agreeTerms = document.getElementById('agreeTerms');
-    const proceedToPay = document.getElementById('proceedToPay');
-    let currentPayLink = '';
+    const paypalContainer = document.getElementById('paypal-button-container');
+    
+    let currentPrice = '0.00'; // Переменная для хранения выбранной цены
 
+    // Открытие модалки и запись цены
     orderBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        currentPayLink = btn.getAttribute('data-paypal-link');
+        currentPrice = btn.getAttribute('data-price');
         agreeTerms.checked = false;
-        proceedToPay.disabled = true;
+        paypalContainer.style.display = 'none'; // Прячем кнопки PayPal
         checkoutModal.style.display = 'block';
       });
     });
 
+    // Закрытие модалки
     closeCheckout.addEventListener('click', () => {
       checkoutModal.style.display = 'none';
-      currentPayLink = '';
+      currentPrice = '0.00';
     });
 
+    // Показываем кнопки PayPal только если стоит галочка
     agreeTerms.addEventListener('change', (e) => {
-      proceedToPay.disabled = !e.target.checked;
-    });
-
-    proceedToPay.addEventListener('click', () => {
-      if (currentPayLink && agreeTerms.checked) {
-        window.location.href = currentPayLink;
+      if (e.target.checked) {
+        paypalContainer.style.display = 'block';
+      } else {
+        paypalContainer.style.display = 'none';
       }
     });
 
+    // Закрытие по клику вне модалки
     window.onclick = function(event) {
       if (event.target.classList.contains('modal')) {
         event.target.style.display = 'none';
       }
     };
+
+    // Рендер кнопок PayPal
+    paypal.Buttons({
+      createOrder: function(data, actions) {
+        // Берем актуальную цену из переменной currentPrice в момент клика
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: currentPrice 
+            }
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          // Здесь то, что происходит после успешной оплаты
+          alert('Payment successful! Target Authorization email will be sent to: ' + details.payer.email_address);
+          checkoutModal.style.display = 'none';
+          // Можно добавить редирект: window.location.href = "/success.html";
+        });
+      }
+    }).render('#paypal-button-container');
   </script>
 </body>
 </html>
