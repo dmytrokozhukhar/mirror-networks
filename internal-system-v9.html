@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mirror CRM v1.6 — Admin Dashboard</title>
+  <title>Mirror CRM v1.7 — Admin Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -31,7 +31,7 @@
     .stat-number { font-size: 2.8rem; font-weight: 800; color: var(--primary); margin-top: 10px; }
     .stat-label { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; }
 
-    /* Stealth Form */
+    /* Stealth Form (Hover revealed) */
     .add-section-wrapper { position: relative; margin-bottom: 25px; }
     .form-trigger { height: 8px; width: 100%; background: transparent; cursor: pointer; }
     .add-form { 
@@ -48,7 +48,7 @@
       width: 100%; padding: 12px; background: #0f1724; border: 1px solid rgba(255,255,255,0.1); 
       color: white; border-radius: 8px; outline: none; font-size: 0.9rem; transition: 0.3s;
     }
-    input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(16, 185, 129, 0.1); }
+    input:focus { border-color: var(--primary); }
     input[type="date"]::-webkit-calendar-picker-indicator, input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
 
     .btn-sync { 
@@ -85,7 +85,7 @@
   <div id="loginScreen" class="login-wrapper">
     <div class="login-box">
       <h2>Mirror CRM</h2>
-      <input type="password" id="adminPass" placeholder="Security Token" style="margin-bottom: 20px; width: 100%;">
+      <input type="password" id="adminPass" placeholder="Enter Dashboard Password" style="margin-bottom: 20px; width: 100%;">
       <button class="btn-sync" onclick="login()">Authenticate</button>
     </div>
   </div>
@@ -108,7 +108,7 @@
         <div><label>Scan Time</label><input type="time" id="f_time" step="1"></div>
         <div><label>Target IP</label><input type="text" id="f_ip" placeholder="109.236.84.23"></div>
         <div><label>Client Email</label><input type="email" id="f_email" placeholder="billing@client.com"></div>
-        <div><label>Audit Tier</label>
+        <div><label>Service Tier</label>
           <select id="f_package">
             <option value="Basic Audit">Basic Audit (€230)</option>
             <option value="Express Mitigation">Express Mitigation (€250)</option>
@@ -138,8 +138,8 @@
             <th>Timestamp</th>
             <th>Target Asset</th>
             <th>Client Identity</th>
-            <th>Service Tier</th>
-            <th>Workflow Status</th>
+            <th>Tier</th>
+            <th>Full Status (Pay/Work)</th>
             <th></th>
           </tr>
         </thead>
@@ -149,8 +149,8 @@
   </div>
 
   <script>
-    const BIN_ID = "69a582c4d0ea881f40e763d3"; 
-    const API_KEY = "$2a$10$S3z8IltwDwTfbcs0rgp6leyEsgIbfjXK4t8.PS1Eer1GxxuQGAtfK";
+    const BIN_ID = "69a58c0043b1c97be9ac1157"; 
+    const API_KEY = "$2a$10$GwRGAuZ3c9u2DkrBDCDEhukA3.lfziuP55HXC5.PZQAY8uZyuXVtG";
     let salesData = [];
     let editingId = null;
 
@@ -176,7 +176,7 @@
         if (!res.ok) throw new Error(res.status);
         salesData = await res.json();
         renderTable();
-      } catch (e) { alert("Load Error: Check Bin ID or API Key"); }
+      } catch (e) { alert("Load Error: Check connection or Bin Visibility"); }
       showLoader(false);
     }
 
@@ -223,8 +223,8 @@
       tbody.innerHTML = ""; let rev = 0;
       salesData.sort((a,b) => b.id - a.id).forEach(s => {
         if (s.status === 'Paid') rev += s.price;
-        const pBadge = s.status === 'Paid' ? 'badge-paid' : 'badge-refund';
-        const wBadge = s.work === 'Process' ? 'badge-process' : 'badge-complete';
+        const pClass = s.status === 'Paid' ? 'badge-paid' : 'badge-refund';
+        const wClass = s.work === 'Process' ? 'badge-process' : 'badge-complete';
         
         tbody.innerHTML += `
           <tr>
@@ -232,7 +232,7 @@
             <td style="font-family:monospace">${s.ip}</td>
             <td style="font-weight:600">${s.email}</td>
             <td>${s.product}</td>
-            <td><span class="badge ${pBadge}">${s.status}</span> / <span class="badge ${wBadge}">${s.work}</span></td>
+            <td><span class="badge ${pClass}">${s.status}</span> / <span class="badge ${wClass}">${s.work}</span></td>
             <td>
               <div class="action-btns">
                 <button class="btn-icon" onclick="editRec(${s.id})">✏️</button>
@@ -260,7 +260,7 @@
     }
 
     async function delRec(id) {
-      if(!confirm("Destroy this record permanently?")) return;
+      if(!confirm("Destroy record?")) return;
       salesData = salesData.filter(x => x.id !== id);
       await handleSync();
     }
