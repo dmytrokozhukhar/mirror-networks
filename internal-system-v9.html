@@ -3,24 +3,25 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mirror CRM v1.1 (Security Audit Tracking)</title>
+  <title>Mirror CRM v1.2 (B2B Audit Tracking)</title>
+  
   <style>
     :root {
       --bg: #0a0f18; --card: #111827; --muted: #9ca3af;
-      --accent: #10b981; --accent-2: #059669; --white: #f3f4f6;
+      --accent: #10b981; --accent-2: #60a5fa; --white: #f3f4f6;
     }
 
     body {
       font-family: Inter, system-ui, -apple-system; margin: 0;
-      color: var(--white); background: var(--bg);
+      color: var(--white); background: linear-gradient(180deg, #071025 0%, #071527 60%);
       -webkit-font-smoothing: antialiased; min-height: 100vh;
     }
 
-    .admin-container { max-width: 1250px; margin: 0 auto; padding: 20px; }
+    .admin-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
     
     /* Login */
-    .login-wrapper { height: 100vh; display: flex; justify-content: center; align-items: center; }
-    .login-box { background: var(--card); padding: 40px; border-radius: 16px; border: 1px solid rgba(16, 185, 129, 0.2); width: 100%; max-width: 400px; text-align: center; }
+    .login-wrapper { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+    .login-box { background: #1e293b; padding: 40px; border-radius: 16px; border: 1px solid rgba(16, 185, 129, 0.2); width: 90%; max-width: 400px; text-align: center; }
     
     .dashboard { display: none; }
     
@@ -30,50 +31,63 @@
     .stat-number { font-size: 2.5rem; font-weight: 800; color: var(--accent); margin-top: 10px; }
     .stat-label { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
 
-    /* --- STEALTH FORM --- */
-    .add-section-wrapper { position: relative; margin-bottom: 25px; padding-top: 10px; }
-    .form-trigger { height: 10px; width: 100%; background: transparent; cursor: pointer; margin-bottom: 5px; }
+    /* STEALTH FORM */
+    .add-section-wrapper { position: relative; margin-bottom: 20px; padding-top: 15px; padding-bottom: 15px; }
+    .form-trigger { height: 10px; width: 100%; background: transparent; cursor: default; }
 
     .add-form { 
       background: var(--card); border-radius: 16px; border: 1px solid rgba(16, 185, 129, 0.2);
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px;
-      max-height: 0; opacity: 0; overflow: hidden; padding: 0 25px; transition: all 0.5s ease;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; align-items: end;
+      max-height: 0; opacity: 0; overflow: hidden; margin-top: 0; padding: 0 25px;      
+      transform: translateY(-10px); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .add-section-wrapper:hover .add-form,
+    .add-section-wrapper:focus-within .add-form,
     .add-form.locked {
-      max-height: 800px; opacity: 1; padding: 30px; margin-top: 5px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      max-height: 600px; opacity: 1; padding: 25px; margin-top: 5px; transform: translateY(0);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5); border-color: rgba(16, 185, 129, 0.4);
     }
 
-    .add-form label { display: block; margin-bottom: 8px; color: var(--muted); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
+    .add-form label { display: block; margin-bottom: 8px; color: var(--muted); font-size: 0.85rem; font-weight: 500; }
 
     input, select { 
       width: 100%; padding: 0 15px; background: #0f1724; border: 1px solid rgba(255,255,255,0.1); 
-      color: white; border-radius: 10px; outline: none; height: 48px; font-size: 0.95rem;
+      color: white; border-radius: 10px; outline: none; height: 48px; box-sizing: border-box; font-size: 0.95rem;
+      transition: border-color 0.3s;
     }
+
     input[type="date"]::-webkit-calendar-picker-indicator,
-    input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
+    input[type="time"]::-webkit-calendar-picker-indicator { 
+        filter: invert(1); cursor: pointer; opacity: 0.6; transition: 0.2s;
+    }
 
     input:focus, select:focus { border-color: var(--accent); }
 
     .btn-primary { 
-      background: var(--accent); color: #fff; padding: 0 20px; height: 48px; border-radius: 10px; 
-      font-weight: 700; border: none; cursor: pointer; transition: 0.3s; width: 100%;
+      background: linear-gradient(90deg, var(--accent), #059669); color: #fff; padding: 0 20px; 
+      height: 48px; border-radius: 10px; font-weight: 700; border: none; cursor: pointer; transition: 0.3s; 
+      width: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.95rem;
     }
-    .btn-primary:hover { background: var(--accent-2); transform: translateY(-1px); }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
 
     /* Table */
     .table-container { overflow-x: auto; background: var(--card); border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); }
     table { width: 100%; border-collapse: collapse; }
-    th { text-align: left; padding: 20px; color: var(--muted); border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.75rem; text-transform: uppercase; }
-    td { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--white); font-size: 0.9rem; }
+    th { text-align: left; padding: 18px; color: var(--muted); border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.8rem; text-transform: uppercase; white-space: nowrap; }
+    td { padding: 18px; border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--white); white-space: nowrap; vertical-align: middle; }
     
-    .badge-paid { background: rgba(16, 185, 129, 0.1); color: var(--accent); padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; }
-    .badge-refunded { background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; }
+    .action-buttons { display: flex; gap: 12px; opacity: 0; transition: opacity 0.2s; justify-content: flex-end; }
+    tr:hover .action-buttons { opacity: 1; }
+    .btn-icon { background: transparent; border: none; cursor: pointer; font-size: 1.2rem; transition: transform 0.2s; }
+    .btn-edit:hover { transform: scale(1.3); } 
+    .btn-delete:hover { transform: scale(1.3); filter: drop-shadow(0 0 5px red); }
 
-    .loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 15, 24, 0.9); z-index: 2000; display: none; justify-content: center; align-items: center; }
-    .loader { border: 4px solid #1e293b; border-top: 4px solid var(--accent); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+    .badge-paid { background: rgba(16, 185, 129, 0.1); color: var(--accent); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; display: inline-block; text-align: center; min-width: 60px;}
+    .badge-refunded { background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; display: inline-block; text-align: center; min-width: 60px;}
+
+    .loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 36, 0.8); z-index: 2000; display: none; justify-content: center; align-items: center; }
+    .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--accent); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
 </head>
@@ -83,40 +97,45 @@
 
   <div id="loginScreen" class="login-wrapper">
     <div class="login-box">
-      <h2 style="color: var(--accent); margin-bottom: 25px;">Mirror CRM Access</h2>
-      <input type="password" id="adminPass" placeholder="Enter Token" style="margin-bottom: 15px;">
-      <button class="btn-primary" onclick="login()">Authenticate</button>
-      <p id="loginError" style="color: #ef4444; margin-top: 15px; display: none; font-weight: 600;">Access Denied</p>
+      <h2 style="color: var(--accent)">Mirror CRM Access</h2>
+      <input type="password" id="adminPass" placeholder="Password" style="margin-bottom: 15px;">
+      <button class="btn-primary" onclick="login()">Login</button>
+      <p id="loginError" style="color: #ef4444; margin-top: 10px; display: none;">Denied</p>
     </div>
   </div>
 
   <div id="dashboard" class="admin-container dashboard">
     <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-      <h1 style="font-size: 1.8rem;">Audit Dashboard <span style="color: var(--accent);">Mirror Networks</span></h1>
-      <button onclick="location.reload()" style="background:#1e293b; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:600;">Sign Out</button>
+      <h1 style="font-size: 1.8rem; margin: 0;">Audit Dashboard <span style="color: var(--accent);">Mirror Networks</span></h1>
+      <button onclick="location.reload()" style="background:#1e293b; color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer;">Logout</button>
     </header>
 
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-label">Net Revenue</div><div class="stat-number" id="totalRevenue">€0</div></div>
-      <div class="stat-card"><div class="stat-label">Total Audits</div><div class="stat-number" id="totalSales">0</div></div>
+      <div class="stat-card"><div class="stat-label">Active Audits</div><div class="stat-number" id="totalSales">0</div></div>
     </div>
 
     <div class="add-section-wrapper">
       <div class="form-trigger"></div>
+
       <div class="add-form" id="addForm">
         <div><label>Scan Date</label><input type="date" id="datePart"></div>
         <div><label>Scan Time</label><input type="time" id="timePart" step="1"></div>
-        <div><label>Target IP / Host</label><input type="text" id="txnInput" placeholder="109.236.84.23"></div>
-        <div><label>Client Email</label><input type="email" id="emailInput" placeholder="contact@client.com"></div>
+        
+        <div><label>Target IP</label><input type="text" id="txnInput" placeholder="109.236.84.23"></div>
+        <div><label>Client Email</label><input type="email" id="emailInput" placeholder="client@email.com"></div>
+        
         <div>
           <label>Service Tier</label>
           <select id="productInput">
-            <option value="Basic Audit">Basic Vulnerability Audit (€230)</option>
-            <option value="Express Mitigation">Express Risk Mitigation (€250)</option>
-            <option value="Advanced Hardening">Advanced System Hardening (€300)</option>
+            <option value="Basic Audit">Basic Audit (€230)</option>
+            <option value="Express Mitigation">Express Mitigation (€250)</option>
+            <option value="Advanced Hardening">Advanced Hardening (€300)</option>
           </select>
         </div>
-        <div><label>Final Price (€)</label><input type="number" id="priceInput" value="230"></div>
+        
+        <div><label>Price (€)</label><input type="number" id="priceInput" value="230"></div>
+        
         <div>
           <label>Status</label>
           <select id="statusInput">
@@ -124,7 +143,11 @@
             <option value="Refunded">Refunded</option>
           </select>
         </div>
-        <div><button id="submitBtn" class="btn-primary" onclick="handleFormSubmit()">+ Sync Record</button></div>
+
+        <div> 
+           <label style="visibility: hidden;">Action</label> 
+           <button id="submitBtn" class="btn-primary" onclick="handleFormSubmit()">+ Sync Audit</button>
+        </div>
       </div>
     </div>
 
@@ -133,12 +156,12 @@
         <thead>
           <tr>
             <th>Date / Time</th>
-            <th>Client Email</th>
             <th>Target IP</th>
-            <th>Service Tier</th>
+            <th>Email</th>
+            <th>Package</th>
             <th>Amount</th>
             <th>Status</th>
-            <th>Actions</th>
+            <th></th>
           </tr>
         </thead>
         <tbody id="tableBody"></tbody>
@@ -155,7 +178,6 @@
 
     setNow();
 
-    // Блокировка формы при вводе
     document.querySelectorAll('.add-form input, .add-form select').forEach(el => {
         el.addEventListener('focus', () => document.getElementById('addForm').classList.add('locked'));
     });
@@ -183,11 +205,13 @@
     async function loadData() {
       showLoader(true);
       try {
-        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': API_KEY } });
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { 
+            headers: { 'X-Master-Key': API_KEY } 
+        });
         const d = await res.json();
-        salesData = Array.isArray(d.record) ? d.record : [];
+        salesData = Array.isArray(d.record) ? d.record : (d.record.customers || []);
         renderTable();
-      } catch (e) { alert("Error loading database: " + e.message); }
+      } catch (e) { alert("ERROR LOADING DATA: " + e.message); }
       showLoader(false);
     }
 
@@ -199,7 +223,10 @@
       const dateVal = document.getElementById('datePart').value;
       const timeVal = document.getElementById('timePart').value;
       
-      if (!email || !ip || !dateVal || !timeVal) return alert("Please fill mandatory fields");
+      if (!email || !price || !dateVal || !timeVal) {
+          alert("Please fill required fields");
+          return;
+      }
 
       showLoader(true);
       const record = { 
@@ -211,9 +238,9 @@
           price: price, status: status
       };
 
-      if (editingId) {
-          const i = salesData.findIndex(s => s.id === editingId);
-          if(i !== -1) salesData[i] = record;
+      if (editingId) { 
+          const i = salesData.findIndex(s => s.id === editingId); 
+          if(i !== -1) salesData[i] = record; 
       } else { salesData.push(record); }
 
       try {
@@ -221,36 +248,59 @@
           method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
           body: JSON.stringify(salesData)
         });
-        editingId = null;
-        document.getElementById('emailInput').value = ""; document.getElementById('txnInput').value = "";
-        document.getElementById('submitBtn').innerText = "+ Sync Record";
         document.getElementById('addForm').classList.remove('locked');
+        editingId = null; 
+        document.getElementById('emailInput').value = ""; document.getElementById('txnInput').value = ""; 
+        document.getElementById('submitBtn').innerText = "+ Sync Audit"; 
         setNow(); renderTable();
-      } catch (e) { alert("Save error: " + e.message); }
+      } catch (e) { alert("SYNC ERROR: " + e.message); }
       showLoader(false);
     }
 
     function renderTable() {
       const tbody = document.getElementById('tableBody');
-      tbody.innerHTML = ""; let revenue = 0;
+      tbody.innerHTML = "";
+      let totalRevenue = 0;
       
       salesData.sort((a,b) => b.id - a.id).forEach(sale => {
-        if (sale.status === 'Paid') revenue += sale.price;
+        if (sale.status === 'Paid') totalRevenue += sale.price;
         const statusBadge = sale.status === 'Paid' ? `<span class="badge-paid">Paid</span>` : `<span class="badge-refunded">Refunded</span>`;
-        
+        const priceStyle = sale.status === 'Refunded' ? `text-decoration: line-through; color: var(--muted);` : `font-weight:bold; color:var(--accent);`;
+
         tbody.innerHTML += `
           <tr>
-            <td style="font-family: monospace; color:var(--muted);">${sale.date}</td>
-            <td style="font-weight:600;">${sale.email}</td>
-            <td style="font-family: monospace; font-size: 0.85rem;">${sale.ip}</td>
+            <td style="font-family: monospace; font-size: 0.9rem; color:var(--muted);">${sale.date}</td>
+            <td style="font-family: monospace;">${sale.ip || '-'}</td>
+            <td>${sale.email}</td>
             <td>${sale.product}</td>
-            <td style="font-weight:bold; color:var(--accent);">€${sale.price}</td>
+            <td style="${priceStyle}">€${sale.price}</td>
             <td>${statusBadge}</td>
-            <td><button style="background:none; border:none; cursor:pointer;" onclick="deleteSale(${sale.id})">🗑️</button></td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-icon btn-edit" onclick="editSale(${sale.id})">✏️</button>
+                <button class="btn-icon btn-delete" onclick="deleteSale(${sale.id})">🗑️</button>
+              </div>
+            </td>
           </tr>`;
       });
-      document.getElementById('totalRevenue').innerText = `€${revenue}`;
+      document.getElementById('totalRevenue').innerText = `€${totalRevenue}`;
       document.getElementById('totalSales').innerText = salesData.length;
+    }
+
+    function editSale(id) {
+      const item = salesData.find(s => s.id === id);
+      if(!item) return;
+      document.getElementById('datePart').value = item.rawDate || item.date.split(' ')[0];
+      document.getElementById('timePart').value = item.rawTime || item.date.split(' ')[1];
+      document.getElementById('emailInput').value = item.email;
+      document.getElementById('txnInput').value = item.ip || ""; 
+      document.getElementById('productInput').value = item.product;
+      document.getElementById('priceInput').value = item.price;
+      document.getElementById('statusInput').value = item.status || "Paid";
+      editingId = id; 
+      document.getElementById('submitBtn').innerText = "💾 Save Audit"; 
+      document.getElementById('addForm').classList.add('locked');
+      window.scrollTo(0,0);
     }
 
     async function deleteSale(id) {
@@ -263,7 +313,7 @@
           body: JSON.stringify(salesData)
         });
         renderTable();
-      } catch (e) { alert("Delete error: " + e.message); }
+      } catch (e) { alert("DELETE ERROR: " + e.message); }
       showLoader(false);
     }
 
