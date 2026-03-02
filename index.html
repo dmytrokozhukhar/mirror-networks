@@ -24,29 +24,33 @@
     .nav { display: flex; gap: 24px; }
     .nav a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
     .nav a:hover { color: var(--primary); }
+
     .hero { text-align: center; padding: 100px 0 60px; }
     .hero-badge { display: inline-block; background: rgba(16, 185, 129, 0.1); color: var(--primary); padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px; }
     .hero h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 20px; font-weight: 800; }
     .hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 40px; }
+    
     .btn { display: inline-block; padding: 14px 28px; border-radius: 8px; font-weight: 600; text-align: center; text-decoration: none; cursor: pointer; transition: 0.3s; border: none; font-size: 1rem; }
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
     .full-width { width: 100%; }
+
     .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-top: 40px; }
     .card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 40px; display: flex; flex-direction: column; position: relative; transition: 0.3s; }
     .card:hover { border-color: var(--primary); transform: translateY(-5px); }
     .card.popular { border: 2px solid var(--primary); }
     .popular-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #fff; padding: 4px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; }
-    .price { font-size: 3rem; font-weight: 800; color: #fff; margin-bottom: 24px; line-height: 1; }
-    .features { list-style: none; margin-bottom: 30px; flex-grow: 1; text-align: left;}
-    .features li { margin-bottom: 12px; color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: flex-start; gap: 10px; }
-    .features li::before { content: '\2713'; color: var(--primary); font-weight: bold; }
     
+    .price { font-size: 3rem; font-weight: 800; color: #fff; margin-bottom: 24px; line-height: 1; }
+    .features { list-style: none; margin-bottom: 30px; flex-grow: 1; }
+    .features li { margin-bottom: 12px; color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: flex-start; gap: 10px; text-align: left; }
+    .features li::before { content: '\2713'; color: var(--primary); font-weight: bold; }
+
     /* FAQ Logic Styles */
     .faq-grid { display: flex; flex-direction: column; gap: 20px; max-width: 800px; margin: 0 auto; }
-    .faq-item { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 24px; cursor: pointer; transition: 0.3s; }
-    .faq-item h3 { color: #fff; font-size: 1.1rem; }
-    .faq-answer { display: none; margin-top: 15px; color: var(--text-muted); font-size: 0.95rem; }
+    .faq-item { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 24px; cursor: pointer; text-align: left; transition: 0.3s; }
+    .faq-item h3 { color: #fff; font-size: 1.1rem; pointer-events: none; }
+    .faq-answer { display: none; margin-top: 15px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; pointer-events: none; }
     .faq-item.active { border-color: var(--primary); }
     .faq-item.active .faq-answer { display: block; }
 
@@ -56,13 +60,23 @@
     .close { color: #fff; position: absolute; top: 20px; right: 30px; font-size: 28px; font-weight: bold; cursor: pointer; }
     .legal-highlight { background: rgba(16, 185, 129, 0.05); border-left: 4px solid var(--primary); padding: 16px; margin-bottom: 24px; color: #fff; }
     .checkbox-container { display: flex; align-items: flex-start; gap: 12px; margin: 30px 0; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
-    .contact-block { text-align: center; padding: 60px 0; }
+    .checkbox-container input { margin-top: 4px; width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
+    
+    .footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; margin-top: 60px; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
   </style>
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <div class="brand">Mirror <span>Networks</span></div>
+      <div class="brand">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7L2 17L12 22L22 17L22 7L12 2Z" stroke="var(--primary)" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M12 22V12" stroke="var(--primary)" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M2 7L12 12L22 7" stroke="var(--primary)" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="12" cy="12" r="2" fill="var(--primary)"/>
+        </svg>
+        Mirror <span>Networks</span>
+      </div>
       <nav class="nav">
         <a href="#services">Services</a>
         <a href="#faq">FAQ</a>
@@ -81,7 +95,6 @@
     </section>
 
     <section id="services" class="section container">
-      <h2 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">Infrastructure Audit Packages</h2>
       <div class="pricing-grid">
         <div class="card">
           <h3>Basic Vulnerability Audit</h3>
@@ -107,76 +120,81 @@
           </ul>
           <button class="btn btn-primary full-width" onclick="openCheckout(250)">Order Express Audit</button>
         </div>
+
+        <div class="card">
+          <h3>Advanced Hardening</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">14-day comprehensive delivery</p>
+          <div class="price">€300</div>
+          <ul class="features">
+            <li>Active server hardening configuration</li>
+            <li>Custom security policy development</li>
+            <li>Final PDF Delivery: Complete Architecture Docs</li>
+          </ul>
+          <button class="btn btn-primary full-width" onclick="openCheckout(300)">Order Advanced Setup</button>
+        </div>
       </div>
     </section>
 
     <section id="faq" class="section container">
-      <h2 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">Frequently Asked Questions</h2>
+      <h2 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">FAQ</h2>
       <div class="faq-grid">
-        <div class="faq-item" onclick="this.classList.toggle('active')">
+        <div class="faq-item" onclick="toggleFaq(this)">
           <h3>How does the audit process work?</h3>
-          <div class="faq-answer">Once your payment is approved, our team begins the diagnostic process. The final PDF report is delivered to your email within the specified SLA period.</div>
+          <div class="faq-answer">Once your payment is approved, our team begins the diagnostic process. The final PDF report is delivered within the specified SLA period.</div>
         </div>
-        <div class="faq-item" onclick="this.classList.toggle('active')">
-          <h3>What if my technical team has questions?</h3>
-          <div class="faq-answer">We provide post-audit support. If your administrators require clarification regarding remediation steps, email us directly before making structural network changes.</div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <h3>What is the deliverable?</h3>
+          <div class="faq-answer">A professionally formatted PDF document including executive summary, technical findings, and firewall remediation steps.</div>
         </div>
       </div>
-    </section>
-
-    <section class="container contact-block">
-      <h2>Questions?</h2>
-      <p style="color: var(--text-muted);">Email: <a href="mailto:kozhukhar.dmytro@outlook.com" style="color: var(--primary);">kozhukhar.dmytro@outlook.com</a></p>
     </section>
   </main>
 
   <div id="checkoutModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal('checkoutModal')">&times;</span>
-      <h2>Finalize Your Order</h2>
-      <div class="legal-highlight"><strong>Binding Agreement:</strong> You are purchasing a custom B2B consulting service. Delivery is defined as the moment the final Technical Audit Report is sent via email.</div>
+      <h2>Finalize Order</h2>
+      <div class="legal-highlight"><strong>Binding Agreement:</strong> Custom B2B digital service. Non-refundable once scanning begins.</div>
       <div class="checkbox-container">
         <input type="checkbox" id="agreeTerms" onchange="togglePayPal(this.checked)">
-        <label for="agreeTerms">I agree to the <a href="#" onclick="openModal('termsModal')">Terms</a> and <a href="#" onclick="openModal('privacyModal')">Privacy Policy</a>. I understand this service is non-refundable upon delivery.</label>
+        <label for="agreeTerms">I agree to the Terms and Privacy Policy. I understand work starts immediately.</label>
       </div>
       <div id="paypal-button-container" style="display: none; margin-top: 20px;"></div>
     </div>
   </div>
 
   <div id="termsModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('termsModal')">&times;</span>
-      <h2>Terms and Conditions</h2>
-      <div class="legal-highlight">Do not recognize the descriptor? Contact support before opening a claim.</div>
-      <p><strong>Refund Policy:</strong> All sales are final once diagnostic work has commenced. Refunds are only issued for verifiable technical failures on our side.</p>
-      <p><strong>Dispute Protocol:</strong> Opening a dispute during the active SLA (7 days) without contacting support constitutes a breach of agreement.</p>
+    <div class="modal-content"><span class="close" onclick="closeModal('termsModal')">&times;</span>
+      <h2>Terms of Service</h2>
+      <p>1. Refund: No refunds once diagnostics start.</p>
+      <p>2. Dispute: Claims during SLA period are a breach of contract.</p>
     </div>
   </div>
 
   <div id="privacyModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('privacyModal')">&times;</span>
+    <div class="modal-content"><span class="close" onclick="closeModal('privacyModal')">&times;</span>
       <h2>Privacy Policy</h2>
-      <p>We collect only strictly necessary data: target IP address and contact email for report delivery.</p>
+      <p>We collect only Target IP and Email for report delivery.</p>
     </div>
   </div>
 
-  <footer class="container" style="text-align:center; padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.05)">
-    <p>© 2026 Mirror Networks. Professional B2B IT Consulting.</p>
+  <footer class="footer container">
+    <p>© 2026 Mirror Networks. <a href="mailto:kozhukhar.dmytro@outlook.com" style="color: var(--primary);">Contact Support</a></p>
   </footer>
 
   <script>
     let currentPrice = 0;
     function openModal(id) { document.getElementById(id).style.display = 'block'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function toggleFaq(el) { el.classList.toggle('active'); }
     function openCheckout(price) { currentPrice = price; openModal('checkoutModal'); }
     function togglePayPal(checked) { document.getElementById('paypal-button-container').style.display = checked ? 'block' : 'none'; }
 
     paypal.Buttons({
       createOrder: (data, actions) => actions.order.create({ purchase_units: [{ amount: { value: currentPrice } }] }),
-      onApprove: (data, actions) => actions.order.capture().then(details => { alert('Success! Report will be sent to ' + details.payer.email_address); closeModal('checkoutModal'); })
+      onApprove: (data, actions) => actions.order.capture().then(details => { alert('Payment Successful!'); closeModal('checkoutModal'); })
     }).render('#paypal-button-container');
-    
+
     window.onclick = (e) => { if(e.target.className === 'modal') e.target.style.display = 'none'; }
   </script>
 </body>
