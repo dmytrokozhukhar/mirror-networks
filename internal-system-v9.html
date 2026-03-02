@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mirror CRM v1.5 (Workflow Tracking)</title>
+  <title>Mirror CRM v1.6 (Ultimate Workflow)</title>
   <style>
     :root {
       --bg: #0a0f18; --card: #111827; --muted: #9ca3af;
@@ -15,52 +15,35 @@
       min-height: 100vh; -webkit-font-smoothing: antialiased;
     }
     .admin-container { max-width: 1300px; margin: 0 auto; padding: 20px; }
-    
-    /* Login */
     .login-wrapper { height: 100vh; display: flex; justify-content: center; align-items: center; }
     .login-box { background: #1e293b; padding: 40px; border-radius: 16px; border: 1px solid rgba(16, 185, 129, 0.2); width: 350px; text-align: center; }
     .dashboard { display: none; }
-
-    /* Stats */
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px; }
     .stat-card { background: var(--card); padding: 25px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); text-align: center; }
     .stat-number { font-size: 2.5rem; font-weight: 800; color: var(--accent); margin-top: 10px; }
-    .stat-label { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
-
-    /* STEALTH FORM */
     .add-section-wrapper { position: relative; margin-bottom: 20px; padding-top: 15px; }
     .form-trigger { height: 10px; width: 100%; background: transparent; cursor: pointer; }
     .add-form { 
       background: var(--card); border-radius: 16px; border: 1px solid rgba(16, 185, 129, 0.3);
       display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; align-items: end;
-      max-height: 0; opacity: 0; overflow: hidden; padding: 0 25px; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height: 0; opacity: 0; overflow: hidden; padding: 0 25px; transition: all 0.5s ease;
     }
     .add-section-wrapper:hover .add-form, .add-form.locked { max-height: 600px; opacity: 1; padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border-color: var(--accent); }
-    
     label { display: block; margin-bottom: 8px; color: var(--muted); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
     input, select { width: 100%; padding: 0 15px; background: #0f1724; border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 10px; height: 48px; outline: none; box-sizing: border-box; }
     input[type="date"]::-webkit-calendar-picker-indicator, input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
-    input:focus, select:focus { border-color: var(--accent); }
-    
-    .btn-primary { background: linear-gradient(90deg, var(--accent), #059669); color: #fff; height: 48px; border-radius: 10px; font-weight: 700; border: none; cursor: pointer; width: 100%; transition: 0.3s; }
-    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-
-    /* Table */
+    .btn-primary { background: linear-gradient(90deg, var(--accent), #059669); color: #fff; height: 48px; border-radius: 10px; font-weight: 700; border: none; cursor: pointer; width: 100%; }
     .table-container { overflow-x: auto; background: var(--card); border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); }
     table { width: 100%; border-collapse: collapse; }
     th { text-align: left; padding: 18px; color: var(--muted); font-size: 0.75rem; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.06); }
     td { padding: 18px; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.9rem; white-space: nowrap; }
-    
     .action-buttons { display: flex; gap: 12px; opacity: 0; transition: 0.2s; justify-content: flex-end; }
     tr:hover .action-buttons { opacity: 1; }
-    
-    /* Badges */
     .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; display: inline-block; }
     .bg-paid { background: rgba(16, 185, 129, 0.1); color: var(--accent); }
     .bg-refund { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
     .bg-process { background: rgba(245, 158, 11, 0.1); color: var(--process); }
     .bg-complete { background: rgba(16, 185, 129, 0.2); color: #fff; border: 1px solid var(--accent); }
-
     .loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 36, 0.8); z-index: 2000; display: none; justify-content: center; align-items: center; }
     .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--accent); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -68,7 +51,6 @@
 </head>
 <body>
   <div id="loader" class="loader-overlay"><div class="loader"></div></div>
-  
   <div id="loginScreen" class="login-wrapper">
     <div class="login-box">
       <h2 style="color: var(--accent); margin-bottom: 25px;">Mirror CRM</h2>
@@ -80,13 +62,13 @@
 
   <div id="dashboard" class="admin-container dashboard">
     <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-      <h1 style="font-size: 1.8rem; margin: 0;">Audit Dashboard <span style="color: var(--accent);">Mirror Networks</span></h1>
+      <h1 style="font-size: 1.8rem;">Audit Dashboard <span style="color: var(--accent);">Mirror Networks</span></h1>
       <button onclick="location.reload()" style="background:#1e293b; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight: 600;">Logout</button>
     </header>
 
     <div class="stats-grid">
-      <div class="stat-card"><div class="stat-label">NET REVENUE</div><div class="stat-number" id="totalRevenue">€0</div></div>
-      <div class="stat-card"><div class="stat-label">ACTIVE AUDITS</div><div class="stat-number" id="totalSales">0</div></div>
+      <div class="stat-card"><div>NET REVENUE</div><div class="stat-number" id="totalRevenue">€0</div></div>
+      <div class="stat-card"><div>TOTAL AUDITS</div><div class="stat-number" id="totalSales">0</div></div>
     </div>
 
     <div class="add-section-wrapper">
@@ -94,9 +76,9 @@
       <div class="add-form" id="addForm">
         <div><label>Scan Date</label><input type="date" id="datePart"></div>
         <div><label>Scan Time</label><input type="time" id="timePart" step="1"></div>
-        <div><label>Target IP</label><input type="text" id="txnInput" placeholder="109.236.84.23"></div>
+        <div><label>Target IP</label><input type="text" id="txnInput" placeholder="1.1.1.1"></div>
         <div><label>Client Email</label><input type="email" id="emailInput" placeholder="client@company.com"></div>
-        <div><label>Service Tier</label>
+        <div><label>Tier</label>
           <select id="productInput">
             <option value="Basic Audit">Basic Audit (€230)</option>
             <option value="Express Mitigation">Express Mitigation (€250)</option>
@@ -127,7 +109,7 @@
             <th>Target IP</th>
             <th>Email</th>
             <th>Tier</th>
-            <th>Full Status (Pay/Work)</th>
+            <th>Status (Pay/Work)</th>
             <th></th>
           </tr>
         </thead>
@@ -164,10 +146,11 @@
       showLoader(true);
       try {
         const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': API_KEY } });
+        if (!res.ok) throw new Error("Load failed: " + res.status);
         const d = await res.json();
         salesData = Array.isArray(d.record) ? d.record : [];
         renderTable();
-      } catch (e) { alert("Data load error: " + e.message); }
+      } catch (e) { alert("❌ Load Error: " + e.message); }
       showLoader(false);
     }
 
@@ -180,11 +163,9 @@
       const status = document.getElementById('statusInput').value;
       const work = document.getElementById('workInput').value;
       
-      let price = 230;
-      if(product === "Express Mitigation") price = 250;
-      if(product === "Advanced Hardening") price = 300;
+      let price = (product === "Basic Audit") ? 230 : (product === "Express Mitigation" ? 250 : 300);
 
-      if(!email || !ip) return alert("Fill mandatory fields");
+      if(!email || !ip) return alert("Fill Email and IP");
 
       showLoader(true);
       const record = { 
@@ -192,21 +173,30 @@
           email, ip, product, price, status, workStatus: work
       };
 
+      const backup = [...salesData];
       if (editingId) {
           const i = salesData.findIndex(s => s.id === editingId);
           salesData[i] = record;
       } else { salesData.push(record); }
 
       try {
-        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
           method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
           body: JSON.stringify(salesData)
         });
-        editingId = null; document.getElementById('addForm').classList.remove('locked');
+
+        if (!response.ok) throw new Error("Server denied: " + response.status);
+
+        editingId = null; 
+        document.getElementById('addForm').classList.remove('locked');
         document.getElementById('submitBtn').innerText = "+ Sync Record"; 
         document.getElementById('emailInput').value = ""; document.getElementById('txnInput').value = "";
         setNow(); renderTable();
-      } catch (e) { alert("Sync failed: " + e.message); }
+        alert("✅ Synced with cloud!");
+      } catch (e) { 
+        salesData = backup;
+        alert("❌ Sync Error: " + e.message); 
+      }
       showLoader(false);
     }
 
@@ -224,16 +214,11 @@
             <td style="font-family:monospace;">${sale.ip || '-'}</td>
             <td>${sale.email}</td>
             <td>${sale.product}</td>
-            <td>
-              <span class="badge ${pBadge}">${sale.status}</span> / 
-              <span class="badge ${wBadge}">${sale.workStatus || 'Process'}</span>
-            </td>
-            <td>
-              <div class="action-buttons">
-                <button style="background:none; border:none; cursor:pointer; font-size:1.2rem;" onclick="editSale(${sale.id})">✏️</button>
-                <button style="background:none; border:none; cursor:pointer; font-size:1.2rem;" onclick="deleteSale(${sale.id})">🗑️</button>
-              </div>
-            </td>
+            <td><span class="badge ${pBadge}">${sale.status}</span> / <span class="badge ${wBadge}">${sale.workStatus || 'Process'}</span></td>
+            <td><div class="action-buttons">
+              <button style="background:none; border:none; cursor:pointer; font-size:1.2rem;" onclick="editSale(${sale.id})">✏️</button>
+              <button style="background:none; border:none; cursor:pointer; font-size:1.2rem;" onclick="deleteSale(${sale.id})">🗑️</button>
+            </div></td>
           </tr>`;
       });
       document.getElementById('totalRevenue').innerText = `€${revenue}`;
@@ -249,19 +234,19 @@
       document.getElementById('productInput').value = item.product;
       document.getElementById('statusInput').value = item.status;
       document.getElementById('workInput').value = item.workStatus || 'Process';
-      editingId = id; document.getElementById('submitBtn').innerText = "💾 Save Audit";
+      editingId = id; document.getElementById('submitBtn').innerText = "💾 Save";
       document.getElementById('addForm').classList.add('locked');
       window.scrollTo(0,0);
     }
 
     async function deleteSale(id) {
-      if(!confirm("Delete this record permanently?")) return;
+      if(!confirm("Delete?")) return;
       showLoader(true);
       salesData = salesData.filter(s => s.id !== id);
       try {
-        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY }, body: JSON.stringify(salesData) });
-        renderTable();
-      } catch (e) { alert("Delete failed"); }
+          await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY }, body: JSON.stringify(salesData) });
+          renderTable();
+      } catch (e) { alert("Delete error"); }
       showLoader(false);
     }
 
