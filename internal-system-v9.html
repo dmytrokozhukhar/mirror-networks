@@ -3,19 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mirror CRM v1.8 — Fulfillment Tracker</title>
+  <title>Mirror CRM v1.9 — Stealth Management</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root { --bg: #0a0f18; --card: #111827; --primary: #10b981; --process: #f59e0b; --text: #f3f4f6; --muted: #9ca3af; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-    .container { max-width: 1350px; margin: 0 auto; padding: 20px; }
+    .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
     .login-wrapper { height: 100vh; display: flex; justify-content: center; align-items: center; }
     .login-box { background: var(--card); padding: 40px; border-radius: 16px; border: 1px solid rgba(16, 185, 129, 0.2); width: 350px; text-align: center; }
     .dashboard { display: none; }
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; }
     .stat-card { background: var(--card); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); text-align: center; }
     .stat-number { font-size: 2.8rem; font-weight: 800; color: var(--primary); margin-top: 10px; }
+    
+    /* STEALTH FORM */
     .add-section-wrapper { position: relative; margin-bottom: 25px; }
     .form-trigger { height: 8px; width: 100%; background: transparent; cursor: pointer; }
     .add-form { 
@@ -24,17 +26,32 @@
       max-height: 0; opacity: 0; overflow: hidden; padding: 0 25px; transition: all 0.4s ease;
     }
     .add-section-wrapper:hover .add-form, .add-form.locked { max-height: 800px; opacity: 1; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+    
     label { display: block; margin-bottom: 8px; color: var(--muted); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
     input, select { width: 100%; padding: 12px; background: #0f1724; border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; outline: none; font-size: 0.85rem; }
-    .btn-sync { background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 8px; font-weight: 800; cursor: pointer; width: 100%; text-transform: uppercase; }
+    .btn-sync { background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 8px; font-weight: 800; cursor: pointer; width: 100%; text-transform: uppercase; transition: 0.3s; }
+    .btn-sync:hover { filter: brightness(1.2); }
+
+    /* TABLE & HOVER ACTIONS */
     .table-container { overflow-x: auto; background: var(--card); border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); }
     table { width: 100%; border-collapse: collapse; }
     th { text-align: left; padding: 20px; color: var(--muted); font-size: 0.7rem; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    td { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.85rem; }
+    td { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.85rem; position: relative; }
+    
+    .action-btns { 
+      display: flex; gap: 15px; opacity: 0; transition: opacity 0.3s ease; 
+      justify-content: flex-end; align-items: center;
+    }
+    tr:hover .action-btns { opacity: 1; }
+    
+    .btn-icon { background: none; border: none; cursor: pointer; font-size: 1.2rem; transition: 0.2s; padding: 5px; }
+    .btn-icon:hover { transform: scale(1.3); }
+
     .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; }
     .badge-paid { background: rgba(16, 185, 129, 0.1); color: var(--primary); }
     .badge-process { background: rgba(245, 158, 11, 0.1); color: var(--process); }
     .badge-complete { background: rgba(16, 185, 129, 0.2); color: #fff; border: 1px solid var(--primary); }
+
     .loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,15,24,0.9); display: none; justify-content: center; align-items: center; z-index: 2000; }
   </style>
 </head>
@@ -44,32 +61,32 @@
 
   <div id="loginScreen" class="login-wrapper">
     <div class="login-box">
-      <h2>Mirror CRM</h2>
-      <input type="password" id="adminPass" placeholder="Token" style="margin-bottom: 20px; width: 100%;">
-      <button class="btn-sync" onclick="login()">Authenticate</button>
+      <h2 style="color:var(--primary); margin-bottom:20px;">Mirror CRM</h2>
+      <input type="password" id="adminPass" placeholder="Password" style="margin-bottom: 20px; width: 100%;">
+      <button class="btn-sync" onclick="login()">Enter Dashboard</button>
     </div>
   </div>
 
   <div id="dashboard" class="container dashboard">
     <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-      <h1>Fulfillment <span style="color: var(--primary);">Engine</span></h1>
-      <button onclick="location.reload()" style="background:#1e293b; color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer;">Sign Out</button>
+      <h1 style="font-weight: 800;">Fulfillment <span style="color: var(--primary);">Control</span></h1>
+      <button onclick="location.reload()" style="background:#1e293b; color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer;">Logout</button>
     </header>
 
     <div class="stats-grid">
       <div class="stat-card"><div>NET REVENUE</div><div class="stat-number" id="totalRevenue">€0</div></div>
-      <div class="stat-card"><div>TOTAL AUDITS</div><div class="stat-number" id="totalSales">0</div></div>
+      <div class="stat-card"><div>ACTIVE AUDITS</div><div class="stat-number" id="totalSales">0</div></div>
     </div>
 
     <div class="add-section-wrapper">
       <div class="form-trigger"></div>
       <div class="add-form" id="addForm">
-        <div style="grid-column: 1 / -1; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 10px; font-weight: bold; font-size: 0.8rem;">STEP 1: ORDER DATA (PAYPAL)</div>
+        <div style="grid-column: 1 / -1; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 10px; font-weight: bold; font-size: 0.8rem; color:var(--primary);">ORDER & PAYMENT INFO</div>
         <div><label>Order Date</label><input type="date" id="order_date"></div>
         <div><label>Order Time</label><input type="time" id="order_time" step="1"></div>
         <div><label>Client Email</label><input type="email" id="f_email" placeholder="client@paypal.com"></div>
         <div><label>Target IP</label><input type="text" id="f_ip" placeholder="109.236.84.23"></div>
-        <div><label>Audit Tier</label>
+        <div><label>Package</label>
           <select id="f_package">
             <option value="Basic Audit">Basic (€230)</option>
             <option value="Express Mitigation">Express (€250)</option>
@@ -77,7 +94,7 @@
           </select>
         </div>
         
-        <div style="grid-column: 1 / -1; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 15px; margin-bottom: 10px; font-weight: bold; font-size: 0.8rem;">STEP 2: DELIVERY DATA (FULFILLMENT)</div>
+        <div style="grid-column: 1 / -1; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 15px; margin-bottom: 10px; font-weight: bold; font-size: 0.8rem; color:var(--process);">FULFILLMENT STATUS</div>
         <div><label>Work Status</label>
           <select id="f_work" onchange="toggleDeliveryInputs(this.value)">
             <option value="Process">In Process</option>
@@ -94,12 +111,12 @@
       <table>
         <thead>
           <tr>
-            <th>Order Date/Time</th>
-            <th>Client & Asset</th>
+            <th>Order Date / Time</th>
+            <th>Asset & Identity</th>
             <th>Tier</th>
-            <th>Status</th>
-            <th>Delivery Date/Time</th>
-            <th></th>
+            <th>Full Status</th>
+            <th>Delivery Timestamp</th>
+            <th style="text-align: right;">Actions</th>
           </tr>
         </thead>
         <tbody id="tableBody"></tbody>
@@ -113,22 +130,26 @@
     let salesData = [];
     let editingId = null;
 
-    function resetTimes() {
+    function setNow() {
       const d = new Date();
       document.getElementById('order_date').value = d.toISOString().split('T')[0];
       document.getElementById('order_time').value = d.toTimeString().split(' ')[0];
-      document.getElementById('done_date').value = "";
-      document.getElementById('done_time').value = "";
+      document.getElementById('f_work').value = "Process";
+      toggleDeliveryInputs("Process");
     }
 
     function toggleDeliveryInputs(val) {
       const isComplete = (val === 'Complete');
-      document.getElementById('done_date').disabled = !isComplete;
-      document.getElementById('done_time').disabled = !isComplete;
+      const dInput = document.getElementById('done_date');
+      const tInput = document.getElementById('done_time');
+      dInput.disabled = !isComplete;
+      tInput.disabled = !isComplete;
       if(isComplete) {
         const d = new Date();
-        document.getElementById('done_date').value = d.toISOString().split('T')[0];
-        document.getElementById('done_time').value = d.toTimeString().split(' ')[0];
+        dInput.value = d.toISOString().split('T')[0];
+        tInput.value = d.toTimeString().split(' ')[0];
+      } else {
+        dInput.value = ""; tInput.value = "";
       }
     }
 
@@ -137,7 +158,7 @@
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('dashboard').style.display = 'block';
         loadData();
-      } else { alert("Denied"); }
+      } else { alert("Access Denied"); }
     }
 
     async function loadData() {
@@ -146,14 +167,14 @@
         const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': API_KEY, 'X-Bin-Meta': 'false' } });
         salesData = await res.json();
         renderTable();
-      } catch (e) { alert("Load Error"); }
-      showLoader(false); resetTimes();
+      } catch (e) { alert("Cloud Load Error"); }
+      showLoader(false); setNow();
     }
 
     async function handleSync() {
       const email = document.getElementById('f_email').value;
       const ip = document.getElementById('f_ip').value;
-      if (!email || !ip) return alert("Fill mandatory data");
+      if (!email || !ip) return alert("Fill mandatory fields");
 
       showLoader(true);
       const pkg = document.getElementById('f_package').value;
@@ -163,8 +184,9 @@
         id: editingId || Date.now(),
         orderTs: document.getElementById('order_date').value + ' ' + document.getElementById('order_time').value,
         doneTs: document.getElementById('f_work').value === 'Complete' ? document.getElementById('done_date').value + ' ' + document.getElementById('done_time').value : null,
-        email, ip, product: pkg, price,
-        status: "Paid",
+        rawDate: document.getElementById('order_date').value,
+        rawTime: document.getElementById('order_time').value,
+        email, ip, product: pkg, price, status: "Paid",
         work: document.getElementById('f_work').value
       };
 
@@ -175,9 +197,11 @@
 
       try {
         await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY }, body: JSON.stringify(salesData) });
-        editingId = null; document.getElementById('addForm').classList.remove('locked');
-        renderTable(); resetTimes();
-      } catch (e) { alert("Sync failed"); }
+        editingId = null; 
+        document.getElementById('addForm').classList.remove('locked');
+        document.getElementById('submitBtn').innerText = "Sync Cloud";
+        renderTable(); setNow();
+      } catch (e) { alert("Sync Error"); }
       showLoader(false);
     }
 
@@ -187,16 +211,24 @@
       salesData.sort((a,b) => b.id - a.id).forEach(s => {
         if (s.status === 'Paid') rev += s.price;
         const wClass = s.work === 'Process' ? 'badge-process' : 'badge-complete';
+        
+        // Починка "undefined" для старых записей
+        const displayOrderTime = s.orderTs || s.date || "N/A";
         const deliveryText = s.doneTs ? s.doneTs : `<span style="color:var(--process); font-weight:600">⌛ In Queue</span>`;
         
         tbody.innerHTML += `
           <tr>
-            <td style="font-family:monospace; color:var(--muted)">${s.orderTs}</td>
+            <td style="font-family:monospace; color:var(--muted)">${displayOrderTime}</td>
             <td><div style="font-weight:600">${s.email}</div><div style="font-family:monospace; font-size:0.75rem; color:var(--muted)">${s.ip}</div></td>
             <td>${s.product}</td>
-            <td><span class="badge badge-paid">PAID</span> / <span class="badge ${wClass}">${s.work}</span></td>
+            <td><span class="badge badge-paid">PAID</span> / <span class="badge ${wClass}">${s.work || 'Process'}</span></td>
             <td style="font-family:monospace">${deliveryText}</td>
-            <td><button style="background:none; border:none; cursor:pointer" onclick="editRec(${s.id})">✏️</button></td>
+            <td style="text-align: right;">
+              <div class="action-btns">
+                <button class="btn-icon" onclick="editRec(${s.id})" title="Edit">✏️</button>
+                <button class="btn-icon" onclick="delRec(${s.id})" title="Delete">🗑️</button>
+              </div>
+            </td>
           </tr>`;
       });
       document.getElementById('totalRevenue').innerText = `€${rev}`;
@@ -205,21 +237,38 @@
 
     function editRec(id) {
       const s = salesData.find(x => x.id === id);
-      const [oD, oT] = s.orderTs.split(' ');
-      document.getElementById('order_date').value = oD;
-      document.getElementById('order_time').value = oT;
+      if(!s) return;
+      
+      const [oD, oT] = (s.orderTs || s.date || " ").split(' ');
+      document.getElementById('order_date').value = oD || s.rawDate || "";
+      document.getElementById('order_time').value = oT || s.rawTime || "";
       document.getElementById('f_ip').value = s.ip;
       document.getElementById('f_email').value = s.email;
       document.getElementById('f_package').value = s.product;
-      document.getElementById('f_work').value = s.work;
-      toggleDeliveryInputs(s.work);
+      document.getElementById('f_work').value = s.work || "Process";
+      
+      toggleDeliveryInputs(s.work || "Process");
       if(s.doneTs) {
         const [dD, dT] = s.doneTs.split(' ');
         document.getElementById('done_date').value = dD;
         document.getElementById('done_time').value = dT;
       }
-      editingId = id; document.getElementById('addForm').classList.add('locked');
+      
+      editingId = id; 
+      document.getElementById('submitBtn').innerText = "Update Cloud";
+      document.getElementById('addForm').classList.add('locked');
       window.scrollTo(0,0);
+    }
+
+    async function delRec(id) {
+      if(!confirm("Destroy this record permanently from cloud?")) return;
+      showLoader(true);
+      salesData = salesData.filter(x => x.id !== id);
+      try {
+        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY }, body: JSON.stringify(salesData) });
+        renderTable(); setNow();
+      } catch (e) { alert("Delete Error"); }
+      showLoader(false);
     }
 
     function showLoader(v) { document.getElementById('loader').style.display = v ? 'flex' : 'none'; }
