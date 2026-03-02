@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mirror CRM v1.9 — Stealth Management</title>
+  <title>Mirror CRM v1.9 — Finance & Fulfillment</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root { --bg: #0a0f18; --card: #111827; --primary: #10b981; --process: #f59e0b; --text: #f3f4f6; --muted: #9ca3af; }
@@ -17,7 +17,6 @@
     .stat-card { background: var(--card); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); text-align: center; }
     .stat-number { font-size: 2.8rem; font-weight: 800; color: var(--primary); margin-top: 10px; }
     
-    /* STEALTH FORM */
     .add-section-wrapper { position: relative; margin-bottom: 25px; }
     .form-trigger { height: 8px; width: 100%; background: transparent; cursor: pointer; }
     .add-form { 
@@ -29,39 +28,32 @@
     
     label { display: block; margin-bottom: 8px; color: var(--muted); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
     input, select { width: 100%; padding: 12px; background: #0f1724; border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; outline: none; font-size: 0.85rem; }
-    .btn-sync { background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 8px; font-weight: 800; cursor: pointer; width: 100%; text-transform: uppercase; transition: 0.3s; }
-    .btn-sync:hover { filter: brightness(1.2); }
+    .btn-sync { background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 8px; font-weight: 800; cursor: pointer; width: 100%; text-transform: uppercase; }
 
-    /* TABLE & HOVER ACTIONS */
     .table-container { overflow-x: auto; background: var(--card); border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); }
     table { width: 100%; border-collapse: collapse; }
     th { text-align: left; padding: 20px; color: var(--muted); font-size: 0.7rem; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    td { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.85rem; position: relative; }
+    td { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.85rem; }
     
-    .action-btns { 
-      display: flex; gap: 15px; opacity: 0; transition: opacity 0.3s ease; 
-      justify-content: flex-end; align-items: center;
-    }
+    /* STEALTH ACTIONS */
+    .action-btns { display: flex; gap: 12px; opacity: 0; transition: 0.2s; justify-content: flex-end; }
     tr:hover .action-btns { opacity: 1; }
-    
-    .btn-icon { background: none; border: none; cursor: pointer; font-size: 1.2rem; transition: 0.2s; padding: 5px; }
+    .btn-icon { background: none; border: none; cursor: pointer; font-size: 1.1rem; transition: 0.2s; }
     .btn-icon:hover { transform: scale(1.3); }
 
     .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; }
     .badge-paid { background: rgba(16, 185, 129, 0.1); color: var(--primary); }
     .badge-process { background: rgba(245, 158, 11, 0.1); color: var(--process); }
     .badge-complete { background: rgba(16, 185, 129, 0.2); color: #fff; border: 1px solid var(--primary); }
-
     .loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,15,24,0.9); display: none; justify-content: center; align-items: center; z-index: 2000; }
   </style>
 </head>
 <body>
   <div id="loader" class="loader"><div style="border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div></div>
-  <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
 
   <div id="loginScreen" class="login-wrapper">
     <div class="login-box">
-      <h2 style="color:var(--primary); margin-bottom:20px;">Mirror CRM</h2>
+      <h2 style="color:var(--primary)">Mirror CRM</h2>
       <input type="password" id="adminPass" placeholder="Password" style="margin-bottom: 20px; width: 100%;">
       <button class="btn-sync" onclick="login()">Enter Dashboard</button>
     </div>
@@ -69,7 +61,7 @@
 
   <div id="dashboard" class="container dashboard">
     <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-      <h1 style="font-weight: 800;">Fulfillment <span style="color: var(--primary);">Control</span></h1>
+      <h1>Finance & <span style="color: var(--primary);">Fulfillment</span></h1>
       <button onclick="location.reload()" style="background:#1e293b; color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer;">Logout</button>
     </header>
 
@@ -81,20 +73,19 @@
     <div class="add-section-wrapper">
       <div class="form-trigger"></div>
       <div class="add-form" id="addForm">
-        <div style="grid-column: 1 / -1; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 10px; font-weight: bold; font-size: 0.8rem; color:var(--primary);">ORDER & PAYMENT INFO</div>
+        <div style="grid-column: 1 / -1; border-bottom: 1px solid #333; padding-bottom: 5px; margin-bottom: 10px; font-weight: 800; font-size: 0.75rem; color:var(--primary)">ORDER DETAILS</div>
         <div><label>Order Date</label><input type="date" id="order_date"></div>
         <div><label>Order Time</label><input type="time" id="order_time" step="1"></div>
-        <div><label>Client Email</label><input type="email" id="f_email" placeholder="client@paypal.com"></div>
-        <div><label>Target IP</label><input type="text" id="f_ip" placeholder="109.236.84.23"></div>
-        <div><label>Package</label>
+        <div><label>IP Address</label><input type="text" id="f_ip" placeholder="109.236.84.23"></div>
+        <div><label>Email</label><input type="email" id="f_email" placeholder="client@mail.com"></div>
+        <div><label>Tier</label>
           <select id="f_package">
-            <option value="Basic Audit">Basic (€230)</option>
-            <option value="Express Mitigation">Express (€250)</option>
-            <option value="Advanced Hardening">Advanced (€300)</option>
+            <option value="Basic Audit" data-price="230">Basic Audit (€230)</option>
+            <option value="Express Mitigation" data-price="250">Express Mitigation (€250)</option>
+            <option value="Advanced Hardening" data-price="300">Advanced Hardening (€300)</option>
           </select>
         </div>
-        
-        <div style="grid-column: 1 / -1; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 15px; margin-bottom: 10px; font-weight: bold; font-size: 0.8rem; color:var(--process);">FULFILLMENT STATUS</div>
+        <div style="grid-column: 1 / -1; border-bottom: 1px solid #333; padding-bottom: 5px; margin-top: 15px; margin-bottom: 10px; font-weight: 800; font-size: 0.75rem; color:var(--process)">FULFILLMENT STATUS</div>
         <div><label>Work Status</label>
           <select id="f_work" onchange="toggleDeliveryInputs(this.value)">
             <option value="Process">In Process</option>
@@ -111,12 +102,13 @@
       <table>
         <thead>
           <tr>
-            <th>Order Date / Time</th>
-            <th>Asset & Identity</th>
+            <th>Order Date</th>
+            <th>Client & Asset</th>
             <th>Tier</th>
-            <th>Full Status</th>
-            <th>Delivery Timestamp</th>
-            <th style="text-align: right;">Actions</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Delivery Date</th>
+            <th></th>
           </tr>
         </thead>
         <tbody id="tableBody"></tbody>
@@ -130,26 +122,21 @@
     let salesData = [];
     let editingId = null;
 
-    function setNow() {
+    function resetTimes() {
       const d = new Date();
       document.getElementById('order_date').value = d.toISOString().split('T')[0];
       document.getElementById('order_time').value = d.toTimeString().split(' ')[0];
-      document.getElementById('f_work').value = "Process";
-      toggleDeliveryInputs("Process");
+      document.getElementById('done_date').value = ""; document.getElementById('done_time').value = "";
     }
 
     function toggleDeliveryInputs(val) {
       const isComplete = (val === 'Complete');
-      const dInput = document.getElementById('done_date');
-      const tInput = document.getElementById('done_time');
-      dInput.disabled = !isComplete;
-      tInput.disabled = !isComplete;
+      document.getElementById('done_date').disabled = !isComplete;
+      document.getElementById('done_time').disabled = !isComplete;
       if(isComplete) {
         const d = new Date();
-        dInput.value = d.toISOString().split('T')[0];
-        tInput.value = d.toTimeString().split(' ')[0];
-      } else {
-        dInput.value = ""; tInput.value = "";
+        document.getElementById('done_date').value = d.toISOString().split('T')[0];
+        document.getElementById('done_time').value = d.toTimeString().split(' ')[0];
       }
     }
 
@@ -158,7 +145,7 @@
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('dashboard').style.display = 'block';
         loadData();
-      } else { alert("Access Denied"); }
+      }
     }
 
     async function loadData() {
@@ -167,41 +154,33 @@
         const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': API_KEY, 'X-Bin-Meta': 'false' } });
         salesData = await res.json();
         renderTable();
-      } catch (e) { alert("Cloud Load Error"); }
-      showLoader(false); setNow();
+      } catch (e) { console.error(e); }
+      showLoader(false); resetTimes();
     }
 
     async function handleSync() {
       const email = document.getElementById('f_email').value;
       const ip = document.getElementById('f_ip').value;
-      if (!email || !ip) return alert("Fill mandatory fields");
+      if (!email || !ip) return alert("Fill mandatory data");
 
       showLoader(true);
-      const pkg = document.getElementById('f_package').value;
-      const price = pkg.includes('230') ? 230 : (pkg.includes('250') ? 250 : 300);
+      const pkgSelect = document.getElementById('f_package');
+      const pkgName = pkgSelect.value;
+      const pkgPrice = parseInt(pkgSelect.options[pkgSelect.selectedIndex].getAttribute('data-price'));
 
       const record = {
         id: editingId || Date.now(),
         orderTs: document.getElementById('order_date').value + ' ' + document.getElementById('order_time').value,
         doneTs: document.getElementById('f_work').value === 'Complete' ? document.getElementById('done_date').value + ' ' + document.getElementById('done_time').value : null,
-        rawDate: document.getElementById('order_date').value,
-        rawTime: document.getElementById('order_time').value,
-        email, ip, product: pkg, price, status: "Paid",
-        work: document.getElementById('f_work').value
+        email, ip, product: pkgName, price: pkgPrice, status: "Paid", work: document.getElementById('f_work').value
       };
 
-      if (editingId) {
-        const i = salesData.findIndex(s => s.id === editingId);
-        salesData[i] = record;
-      } else { salesData.push(record); }
+      if (editingId) { const i = salesData.findIndex(s => s.id === editingId); salesData[i] = record; } else { salesData.push(record); }
 
       try {
         await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY }, body: JSON.stringify(salesData) });
-        editingId = null; 
-        document.getElementById('addForm').classList.remove('locked');
-        document.getElementById('submitBtn').innerText = "Sync Cloud";
-        renderTable(); setNow();
-      } catch (e) { alert("Sync Error"); }
+        editingId = null; document.getElementById('addForm').classList.remove('locked'); renderTable(); resetTimes();
+      } catch (e) { alert("Sync failed"); }
       showLoader(false);
     }
 
@@ -210,23 +189,21 @@
       tbody.innerHTML = ""; let rev = 0;
       salesData.sort((a,b) => b.id - a.id).forEach(s => {
         if (s.status === 'Paid') rev += s.price;
-        const wClass = s.work === 'Process' ? 'badge-process' : 'badge-complete';
-        
-        // Починка "undefined" для старых записей
-        const displayOrderTime = s.orderTs || s.date || "N/A";
+        const wBadge = s.work === 'Process' ? 'badge-process' : 'badge-complete';
         const deliveryText = s.doneTs ? s.doneTs : `<span style="color:var(--process); font-weight:600">⌛ In Queue</span>`;
         
         tbody.innerHTML += `
           <tr>
-            <td style="font-family:monospace; color:var(--muted)">${displayOrderTime}</td>
+            <td style="font-family:monospace; color:var(--muted)">${s.orderTs}</td>
             <td><div style="font-weight:600">${s.email}</div><div style="font-family:monospace; font-size:0.75rem; color:var(--muted)">${s.ip}</div></td>
             <td>${s.product}</td>
-            <td><span class="badge badge-paid">PAID</span> / <span class="badge ${wClass}">${s.work || 'Process'}</span></td>
+            <td style="color:var(--primary); font-weight:bold">€${s.price}</td>
+            <td><span class="badge badge-paid">PAID</span> / <span class="badge ${wBadge}">${s.work}</span></td>
             <td style="font-family:monospace">${deliveryText}</td>
-            <td style="text-align: right;">
+            <td>
               <div class="action-btns">
-                <button class="btn-icon" onclick="editRec(${s.id})" title="Edit">✏️</button>
-                <button class="btn-icon" onclick="delRec(${s.id})" title="Delete">🗑️</button>
+                <button class="btn-icon" onclick="editRec(${s.id})">✏️</button>
+                <button class="btn-icon" onclick="delRec(${s.id})">🗑️</button>
               </div>
             </td>
           </tr>`;
@@ -237,38 +214,19 @@
 
     function editRec(id) {
       const s = salesData.find(x => x.id === id);
-      if(!s) return;
-      
-      const [oD, oT] = (s.orderTs || s.date || " ").split(' ');
-      document.getElementById('order_date').value = oD || s.rawDate || "";
-      document.getElementById('order_time').value = oT || s.rawTime || "";
-      document.getElementById('f_ip').value = s.ip;
-      document.getElementById('f_email').value = s.email;
-      document.getElementById('f_package').value = s.product;
-      document.getElementById('f_work').value = s.work || "Process";
-      
-      toggleDeliveryInputs(s.work || "Process");
-      if(s.doneTs) {
-        const [dD, dT] = s.doneTs.split(' ');
-        document.getElementById('done_date').value = dD;
-        document.getElementById('done_time').value = dT;
-      }
-      
-      editingId = id; 
-      document.getElementById('submitBtn').innerText = "Update Cloud";
-      document.getElementById('addForm').classList.add('locked');
-      window.scrollTo(0,0);
+      const [oD, oT] = s.orderTs.split(' ');
+      document.getElementById('order_date').value = oD; document.getElementById('order_time').value = oT;
+      document.getElementById('f_ip').value = s.ip; document.getElementById('f_email').value = s.email;
+      document.getElementById('f_package').value = s.product; document.getElementById('f_work').value = s.work;
+      toggleDeliveryInputs(s.work);
+      if(s.doneTs) { const [dD, dT] = s.doneTs.split(' '); document.getElementById('done_date').value = dD; document.getElementById('done_time').value = dT; }
+      editingId = id; document.getElementById('addForm').classList.add('locked'); window.scrollTo(0,0);
     }
 
     async function delRec(id) {
-      if(!confirm("Destroy this record permanently from cloud?")) return;
-      showLoader(true);
+      if(!confirm("Delete record?")) return;
       salesData = salesData.filter(x => x.id !== id);
-      try {
-        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY }, body: JSON.stringify(salesData) });
-        renderTable(); setNow();
-      } catch (e) { alert("Delete Error"); }
-      showLoader(false);
+      await handleSync();
     }
 
     function showLoader(v) { document.getElementById('loader').style.display = v ? 'flex' : 'none'; }
