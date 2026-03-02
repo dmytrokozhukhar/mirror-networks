@@ -36,14 +36,7 @@
     }
     .header-inner { display: flex; justify-content: space-between; align-items: center; }
     .brand { 
-      display: flex; 
-      align-items: center; 
-      gap: 12px; 
-      font-size: 1.2rem; 
-      font-weight: 800; 
-      color: var(--text-main); 
-      text-transform: uppercase; 
-      letter-spacing: 1px; 
+      display: flex; align-items: center; gap: 12px; font-size: 1.2rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; 
     }
     .brand span { color: var(--primary); }
     .nav { display: flex; gap: 24px; }
@@ -56,9 +49,7 @@
     }
     .hero h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 20px; font-weight: 800; }
     .hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 40px; }
-    .btn {
-      display: inline-block; padding: 14px 28px; border-radius: 8px; font-weight: 600; text-align: center; text-decoration: none; cursor: pointer; transition: 0.3s; border: none; font-size: 1rem;
-    }
+    .btn { display: inline-block; padding: 14px 28px; border-radius: 8px; font-weight: 600; text-align: center; text-decoration: none; cursor: pointer; transition: 0.3s; border: none; font-size: 1rem; }
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
     .btn-primary:disabled { background: #374151; color: #9ca3af; cursor: not-allowed; transform: none; box-shadow: none; }
@@ -73,6 +64,17 @@
     .features { list-style: none; margin-bottom: 30px; flex-grow: 1; }
     .features li { margin-bottom: 12px; color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: flex-start; gap: 10px; }
     .features li::before { content: '\2713'; color: var(--primary); font-weight: bold; }
+    
+    /* FAQ & About Styles */
+    .faq-grid { display: flex; flex-direction: column; gap: 20px; max-width: 800px; margin: 0 auto; }
+    .faq-item { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 24px; }
+    .faq-item h3 { color: #fff; font-size: 1.1rem; margin-bottom: 10px; }
+    .faq-item p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; }
+    .about-block { text-align: center; max-width: 800px; margin: 0 auto; padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .contact-block { text-align: center; padding: 60px 0; margin-bottom: 40px; }
+    .contact-block a { color: var(--primary); text-decoration: none; font-weight: 600; }
+
+    /* Modals */
     .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
     .modal-content { background-color: var(--bg-card); margin: 5% auto; padding: 40px; border: 1px solid var(--border); width: 90%; max-width: 800px; border-radius: 16px; color: var(--text-muted); position: relative; }
     .modal-content h2 { color: #fff; margin-bottom: 24px; }
@@ -86,6 +88,7 @@
     .checkbox-container input { margin-top: 4px; width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
     .checkbox-container label { font-size: 0.9rem; color: var(--text-main); cursor: pointer; line-height: 1.5; }
     .checkbox-container a { color: var(--primary); text-decoration: underline; }
+    
     .footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; margin-top: 60px; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
     .footer-links { margin-top: 16px; display: flex; justify-content: center; gap: 20px; }
     .footer-links a { color: var(--primary); text-decoration: none; cursor: pointer; }
@@ -171,6 +174,36 @@
         </div>
       </div>
     </section>
+
+    <section class="section container">
+      <h2 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">Frequently Asked Questions</h2>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h3>How does the audit process work?</h3>
+          <p>Once your payment is approved, our security team begins the external diagnostic process within 24 hours. We conduct passive reconnaissance and vulnerability scanning strictly on the provided IP address. The final PDF report is delivered to your email within the specified SLA.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What exactly is included in the deliverable?</h3>
+          <p>You will receive a highly concentrated, professionally formatted PDF document. It includes an executive summary, detailed technical findings (exposed ports, SSL/TLS cryptographic status), risk theory analysis, and specific, actionable firewall remediation steps.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What if my technical team has questions?</h3>
+          <p>We provide post-audit support. If your system administrators require clarification regarding the remediation steps or firewall configurations detailed in the report, email us directly before making structural network changes.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="about-block">
+        <h2 style="font-size: 1.8rem; margin-bottom: 20px;">About Mirror Networks</h2>
+        <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6;">We provide high-quality B2B IT security audits designed to help corporate entities identify blind spots in their external infrastructure. We rely on industry-standard tools and risk theory to deliver clear, actionable intelligence directly to your technical teams.</p>
+      </div>
+    </section>
+
+    <section class="container contact-block">
+      <h2 style="font-size: 1.8rem; margin-bottom: 16px;">Questions?</h2>
+      <p style="color: var(--text-muted);">Email us at: <a href="mailto:kozhukhar.dmytro@outlook.com">kozhukhar.dmytro@outlook.com</a></p>
+    </section>
   </main>
 
   <div id="checkoutModal" class="modal">
@@ -195,13 +228,27 @@
   <div id="termsModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="document.getElementById('termsModal').style.display='none'">&times;</span>
-      <h2>Terms of Service & Delivery</h2>
-      <h3>1. Scope of Work</h3>
-      <p>Mirror Networks provides technical consulting, vulnerability scanning, and infrastructure hardening services.</p>
-      <h3>2. Proof of Delivery</h3>
-      <p>Fulfillment is legally defined as the moment the final Technical Audit Report is sent to the Client's email.</p>
-      <h3>3. Refund Policy</h3>
-      <p>All sales are final and non-refundable once diagnostic work has commenced.</p>
+      <h2>Terms and Conditions</h2>
+      
+      <div class="legal-highlight">
+        <strong>Important billing notice:</strong> Payments are processed by an individual professional service provider. Do not dispute a charge solely because you do not recognize the descriptor.
+      </div>
+
+      <h3>1. Products and Services</h3>
+      <ul>
+        <li>We provide digital B2B IT infrastructure and network security audits.</li>
+        <li><strong>Format:</strong> Delivered digitally as a highly concentrated PDF Technical Report.</li>
+        <li><strong>Delivery:</strong> Sent directly to your provided email address within the specified Service Level Agreement (SLA) timeframe (e.g., 5 or 7 days).</li>
+      </ul>
+
+      <h3>2. Strict Refund Policy</h3>
+      <p>Due to the irrevocable and custom nature of technical diagnostic consulting, <strong>all sales are final and non-refundable</strong> once the active diagnostic scanning process has commenced.</p>
+
+      <h3>3. Dispute Resolution & SLA Protocol</h3>
+      <p>By purchasing, you agree to respect the specified timeframe (SLA) for your audit. <strong>Opening a payment claim, dispute, or chargeback with PayPal during the active diagnostic period (before the SLA has expired) without contacting us first constitutes a direct breach of this agreement.</strong> Unjustified early disputes will not be accepted and will be contested using our server audit logs as proof of ongoing work. We review legitimate claims on a case-by-case basis only after the SLA has concluded.</p>
+
+      <h3>4. Contact Us</h3>
+      <p>Email: <a href="mailto:kozhukhar.dmytro@outlook.com" style="color: var(--primary);">kozhukhar.dmytro@outlook.com</a></p>
     </div>
   </div>
 
@@ -209,7 +256,17 @@
     <div class="modal-content">
       <span class="close" onclick="document.getElementById('privacyModal').style.display='none'">&times;</span>
       <h2>Privacy Policy</h2>
-      <p>We collect only the email address and technical parameters strictly necessary to perform the requested audit. Payment processing is handled entirely by PayPal.</p>
+      <p>We comply with data protection regulations. We collect only what is strictly necessary to perform the security audit and maintain security logs as proof of delivery.</p>
+      
+      <h3>1. Information We Collect</h3>
+      <ul>
+        <li><strong>Target info:</strong> IP addresses or domains explicitly provided by you for scanning.</li>
+        <li><strong>Contact info:</strong> Your email address for the delivery of the final PDF report.</li>
+        <li><strong>Payment info:</strong> Processed securely by PayPal. We do not see or store your credit card details.</li>
+      </ul>
+
+      <h3>2. Contact Us</h3>
+      <p>Email: <a href="mailto:kozhukhar.dmytro@outlook.com" style="color: var(--primary);">kozhukhar.dmytro@outlook.com</a></p>
     </div>
   </div>
 
@@ -218,36 +275,34 @@
     <div class="footer-links">
       <a onclick="document.getElementById('termsModal').style.display='block'">Terms of Service</a>
       <a onclick="document.getElementById('privacyModal').style.display='block'">Privacy Policy</a>
-      <a href="mailto:billing@mirrornetworks.example">Contact Billing</a>
+      <a href="mailto:kozhukhar.dmytro@outlook.com">Contact Support & Billing</a>
     </div>
   </footer>
 
   <script>
+    // Логика кнопок заказа и модалки PayPal
     const orderBtns = document.querySelectorAll('.order-btn');
     const checkoutModal = document.getElementById('checkoutModal');
     const closeCheckout = document.getElementById('closeCheckout');
     const agreeTerms = document.getElementById('agreeTerms');
     const paypalContainer = document.getElementById('paypal-button-container');
     
-    let currentPrice = '0.00'; // Переменная для хранения выбранной цены
+    let currentPrice = '0.00';
 
-    // Открытие модалки и запись цены
     orderBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         currentPrice = btn.getAttribute('data-price');
         agreeTerms.checked = false;
-        paypalContainer.style.display = 'none'; // Прячем кнопки PayPal
+        paypalContainer.style.display = 'none';
         checkoutModal.style.display = 'block';
       });
     });
 
-    // Закрытие модалки
     closeCheckout.addEventListener('click', () => {
       checkoutModal.style.display = 'none';
       currentPrice = '0.00';
     });
 
-    // Показываем кнопки PayPal только если стоит галочка
     agreeTerms.addEventListener('change', (e) => {
       if (e.target.checked) {
         paypalContainer.style.display = 'block';
@@ -256,7 +311,6 @@
       }
     });
 
-    // Закрытие по клику вне модалки
     window.onclick = function(event) {
       if (event.target.classList.contains('modal')) {
         event.target.style.display = 'none';
@@ -266,7 +320,6 @@
     // Рендер кнопок PayPal
     paypal.Buttons({
       createOrder: function(data, actions) {
-        // Берем актуальную цену из переменной currentPrice в момент клика
         return actions.order.create({
           purchase_units: [{
             amount: {
@@ -277,10 +330,8 @@
       },
       onApprove: function(data, actions) {
         return actions.order.capture().then(function(details) {
-          // Здесь то, что происходит после успешной оплаты
           alert('Payment successful! Target Authorization email will be sent to: ' + details.payer.email_address);
           checkoutModal.style.display = 'none';
-          // Можно добавить редирект: window.location.href = "/success.html";
         });
       }
     }).render('#paypal-button-container');
